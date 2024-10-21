@@ -9,7 +9,7 @@ Getting started is easy! Download the teacher.gradebook.exe from the latest rele
 ##Roadmap
 # v.0.2
 This update will (hopefully) have a lot of the UI features since the bones are already there.
--  UI
+# UI
   - Fully working dark and light mode
   - Making the theme match for all of the elements
     - The landing page and welcome page will follow the main app theme that the user picks in the settings page.
