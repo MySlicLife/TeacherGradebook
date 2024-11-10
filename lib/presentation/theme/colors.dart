@@ -90,7 +90,6 @@ class AvailableColors {
     Color.fromARGB(255, 21, 102, 67), // Dark Green
     Color.fromARGB(255, 255, 239, 144), //Yellow
     Color.fromARGB(255, 255, 153, 85), //Orange
-
   ];
 }
 
@@ -98,6 +97,8 @@ class GreyTheme {
   int colorThemeId = 0;
   ThemeData lightMode = ThemeData(
       brightness: Brightness.light,
+      primaryColorLight: Color.fromARGB(255, 239, 239, 239),
+      primaryColorDark: Color.fromARGB(255, 169, 169, 169),
       colorScheme: ColorScheme.light(
         surface: Color.fromARGB(255, 224, 224, 224),
         primary: Color.fromARGB(255, 204, 204, 204),
@@ -109,6 +110,8 @@ class GreyTheme {
 // Dark Mode
   ThemeData darkMode = ThemeData(
       brightness: Brightness.dark,
+      primaryColorLight: Color.fromARGB(255, 119, 119, 119),
+      primaryColorDark: Color.fromARGB(255, 85, 85, 85),
       colorScheme: ColorScheme.dark(
         surface: Color.fromARGB(255, 30, 30, 30),
         primary: Color.fromARGB(255, 102, 102, 102),
@@ -220,26 +223,24 @@ class LightBlueTheme {
 class BlueTheme {
   int colorThemeId = 5;
   ThemeData lightMode = ThemeData(
-  brightness: Brightness.light,
-  colorScheme: ColorScheme.light(
-    surface: Color.fromARGB(255, 196, 214, 227), 
-    primary: Color.fromARGB(255, 110, 145, 176), 
-    secondary: Color.fromARGB(255, 48, 73, 100), 
-    tertiary: Color.fromARGB(255, 31, 45, 62), 
-    inversePrimary: Color.fromARGB(255, 45, 54, 64), 
-  )
-);
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        surface: Color.fromARGB(255, 196, 214, 227),
+        primary: Color.fromARGB(255, 110, 145, 176),
+        secondary: Color.fromARGB(255, 48, 73, 100),
+        tertiary: Color.fromARGB(255, 31, 45, 62),
+        inversePrimary: Color.fromARGB(255, 45, 54, 64),
+      ));
 
-ThemeData darkMode = ThemeData(
-  brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
-    surface: Color.fromARGB(255, 2, 1, 2), 
-    primary: Color.fromARGB(255, 45, 54, 64),
-    secondary: Color.fromARGB(255, 83, 100, 116), 
-    tertiary: Color.fromARGB(255, 195, 217, 239), 
-    inversePrimary: Color.fromARGB(255, 229, 239, 248), 
-  )
-);
+  ThemeData darkMode = ThemeData(
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.dark(
+        surface: Color.fromARGB(255, 2, 1, 2),
+        primary: Color.fromARGB(255, 45, 54, 64),
+        secondary: Color.fromARGB(255, 83, 100, 116),
+        tertiary: Color.fromARGB(255, 195, 217, 239),
+        inversePrimary: Color.fromARGB(255, 229, 239, 248),
+      ));
 }
 
 class GreenTheme {
@@ -293,51 +294,47 @@ class DarkGreenTheme {
 class YellowTheme {
   int colorThemeId = 8;
   ThemeData lightMode = ThemeData(
-  brightness: Brightness.light,
-  colorScheme: ColorScheme.light(
-    surface: Color.fromARGB(255, 255, 246, 157),
-    primary: Color.fromARGB(255, 255, 228, 95),
-    secondary: Color.fromARGB(255, 255, 210, 80),
-    tertiary: Color.fromARGB(255, 255, 180, 64),
-    inversePrimary: Color.fromARGB(255, 155, 140, 34),
-  )
-);
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        surface: Color.fromARGB(255, 255, 246, 157),
+        primary: Color.fromARGB(255, 255, 228, 95),
+        secondary: Color.fromARGB(255, 255, 210, 80),
+        tertiary: Color.fromARGB(255, 255, 180, 64),
+        inversePrimary: Color.fromARGB(255, 155, 140, 34),
+      ));
 
 // Dark Mode
-ThemeData darkMode = ThemeData(
-  brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
-    surface: Color.fromARGB(255, 30, 30, 30),
-    primary: Color.fromARGB(255, 155, 140, 34),
-    secondary: Color.fromARGB(255, 255, 180, 64),
-    tertiary: Color.fromARGB(255, 255, 228, 95),
-    inversePrimary: Color.fromARGB(255, 255, 246, 157),
-  )
-);
+  ThemeData darkMode = ThemeData(
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.dark(
+        surface: Color.fromARGB(255, 30, 30, 30),
+        primary: Color.fromARGB(255, 155, 140, 34),
+        secondary: Color.fromARGB(255, 255, 180, 64),
+        tertiary: Color.fromARGB(255, 255, 228, 95),
+        inversePrimary: Color.fromARGB(255, 255, 246, 157),
+      ));
 }
 
 class OrangeTheme {
   int colorThemeId = 9;
   ThemeData lightMode = ThemeData(
-  brightness: Brightness.light,
-  colorScheme: ColorScheme.light(
-    surface: Color.fromARGB(255, 255, 227, 196),
-    primary: Color.fromARGB(255, 255, 199, 165),
-    secondary: Color.fromARGB(255, 255, 179, 137),
-    tertiary: Color.fromARGB(255, 255, 145, 111),
-    inversePrimary: Color.fromARGB(255, 155, 88, 43),
-  )
-);
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        surface: Color.fromARGB(255, 255, 227, 196),
+        primary: Color.fromARGB(255, 255, 199, 165),
+        secondary: Color.fromARGB(255, 255, 179, 137),
+        tertiary: Color.fromARGB(255, 255, 145, 111),
+        inversePrimary: Color.fromARGB(255, 155, 88, 43),
+      ));
 
 // Dark Mode
-ThemeData darkMode = ThemeData(
-  brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
-    surface: Color.fromARGB(255, 30, 30, 30),
-    primary: Color.fromARGB(255, 155, 88, 43),
-    secondary: Color.fromARGB(255, 255, 145, 111),
-    tertiary: Color.fromARGB(255, 255, 199, 165),
-    inversePrimary: Color.fromARGB(255, 255, 227, 196),
-  )
-);
+  ThemeData darkMode = ThemeData(
+      brightness: Brightness.dark,
+      colorScheme: ColorScheme.dark(
+        surface: Color.fromARGB(255, 30, 30, 30),
+        primary: Color.fromARGB(255, 155, 88, 43),
+        secondary: Color.fromARGB(255, 255, 145, 111),
+        tertiary: Color.fromARGB(255, 255, 199, 165),
+        inversePrimary: Color.fromARGB(255, 255, 227, 196),
+      ));
 }

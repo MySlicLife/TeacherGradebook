@@ -15,10 +15,11 @@ class GradeDialog extends StatefulWidget {
   final Course currentCourse;
   final int initialIndex;
 
-  late bool isMissing;
-  late bool isLate;
-  late bool isComplete;
+  late final bool isMissing;
+  late final bool isLate;
+  late final bool isComplete;
 
+  // ignore: prefer_const_constructors_in_immutables
   GradeDialog({
     super.key,
     required this.assignment,

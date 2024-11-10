@@ -1,17 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:teacher_gradebook/presentation/theme/colors.dart';
 
 class ColorPickerDialog extends StatelessWidget {
-  final Color currentColor;
+  final int yearColorId;
   final List<Color> availableColors;
 
-  const ColorPickerDialog({super.key, required this.currentColor, required this.availableColors});
+  const ColorPickerDialog({super.key, required this.yearColorId, required this.availableColors});
 
   @override
   Widget build(BuildContext context) {
-    Color selectedColor = currentColor; // Use a local variable for selection
-    int colorId = availableColors.indexOf(selectedColor); // Initialize colorId
+    Color selectedColor = AvailableColors.colors[yearColorId]; // Use a local variable for selection
+    int colorId = yearColorId; // Initialize colorId
 
     return AlertDialog(
       title: Text("Select Color"),
@@ -28,7 +29,7 @@ class ColorPickerDialog extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop({'color': selectedColor, 'colorId': colorId}); // Return selected color
+              Navigator.of(context).pop(colorId); // Return selected color
             },
             child: Text("Select"),
           ),

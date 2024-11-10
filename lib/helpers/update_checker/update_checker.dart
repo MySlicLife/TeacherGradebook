@@ -17,9 +17,8 @@ class Logger {
           path.dirname(executablePath); // Get the directory of the executable
 
       _logFile = File('$logDirectory/app_log.txt');
-      final now = DateTime.now();
-      final formatter = DateFormat('MM/dd/yyyy HH:mm:ss');
-      final formattedDate = formatter.format(now);
+
+      final formattedDate = getCurrentDateTime();
 
       // Clear the log file on initialization
       await _logFile.writeAsString('Log file initialized.\n',
@@ -36,6 +35,12 @@ class Logger {
   }
 }
 
+//Get current time
+String getCurrentDateTime() {
+        final now = DateTime.now();
+      final formatter = DateFormat('MM/dd/yyyy HH:mm:ss');
+      return formatter.format(now);
+}
 // Function to check for updates
 Future<bool> checkForUpdates() async {
   const versionUrl =

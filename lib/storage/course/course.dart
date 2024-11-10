@@ -1,4 +1,5 @@
 
+import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 
 import '../assignment/assignment.dart';
@@ -22,7 +23,9 @@ class Course {
   @Backlink(to: 'courses')
   final students = IsarLinks<Student>(); // Backlink to students
 
-  Course({required this.courseName, required this.coursePeriod});
+  late List<double> thresholds; //Map for the score that gets you what points
+
+  Course({required this.courseName, required this.coursePeriod, required this.thresholds});
 
   @override
   bool operator ==(Object other) =>
@@ -31,5 +34,23 @@ class Course {
 
   @override
   int get hashCode => courseId.hashCode;
+
+  // Method to get letter grade
+  String getLetterGrade(double numericGrade) {
+    if (numericGrade >= thresholds[0]) return 'A';
+    if (numericGrade >= thresholds[1]) return 'B';
+    if (numericGrade >= thresholds[2]) return 'C';
+    if (numericGrade >= thresholds[3]) return 'D';
+    if (numericGrade < thresholds[3]) return 'F';
+    return 'N/A';
+  }
+
+      String getFormattedPointsEarned(double? pointsEarned) {
+      if (pointsEarned == null) {
+        return '';
+      }
+    NumberFormat format = NumberFormat('###.#');
+    return format.format(pointsEarned);
+  } 
 }
 
