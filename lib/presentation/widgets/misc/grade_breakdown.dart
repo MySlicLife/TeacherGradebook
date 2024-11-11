@@ -7,11 +7,13 @@ class GradeBreakdown extends StatefulWidget {
   final Course? currentCourse;
   final Year? selectedYear;
   final ThemeData screenTheme;
+  final double widgetWidth;
   const GradeBreakdown(
       {super.key,
       this.currentCourse,
       this.selectedYear,
-      required this.screenTheme});
+      required this.screenTheme,
+      required this.widgetWidth});
 
   @override
   State<GradeBreakdown> createState() => _GradeBreakdownState();
@@ -73,11 +75,11 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${widget.currentCourse?.courseName ?? widget.selectedYear?.year ?? "Example "} Grades",
+          "${widget.currentCourse?.courseName ?? widget.selectedYear?.year ?? "Example"} Grades",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: widget.screenTheme.colorScheme.inversePrimary,
+            color: widget.screenTheme.colorScheme.onSecondary,
           ),
         ),
         SizedBox(height: 10),
@@ -94,16 +96,13 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
                   child: Text(
                     gradeCountMap.entries.toList()[index].key,
                     style: TextStyle(
-                        color: widget.screenTheme.colorScheme.inversePrimary),
+                        color: widget.screenTheme.colorScheme.onPrimary),
                   ),
                 ),
                 // Bar itself
                 Container(
                   width: (maxValue > 0
-                      ? (gradeCountMap.entries.toList()[index].value /
-                              maxValue) *
-                          400
-                      : 0), // Increase multiplier for visibility
+                      ? (gradeCountMap.entries.toList()[index].value / maxValue) * widget.widgetWidth : 0), // Increase multiplier for visibility
                   height: 20,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -115,7 +114,7 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
                 Text(
                   gradeCountMap.entries.toList()[index].value.toString(),
                   style: TextStyle(
-                      color: widget.screenTheme.colorScheme.inversePrimary),
+                      color: widget.screenTheme.colorScheme.onPrimary),
                 ),
               ],
             ),

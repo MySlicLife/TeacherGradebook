@@ -16,13 +16,13 @@ Usage: Main action buttons, app bar background, and any other elements that shou
 Example: Use for primary buttons, floating action buttons (FAB), and the main app bar color.
 
 ----------------------------
-SECONDARY
+secondary
 ----------------------------
-Usage: Secondary actions or elements that need to be visible but are less critical than primary elements.
+Usage: secondary actions or elements that need to be visible but are less critical than primary elements.
 Example: Use for secondary buttons or less emphasized elements like borders, dividers, or toggle switches.
 
 ----------------------------
-TERTIARY
+tertiary
 ----------------------------
 Usage: Subtle backgrounds, lighter surfaces, or less prominent UI elements that still need to be visible.
 Example: Use for background shades of input fields, tooltips, or any additional layer of separation in the UI.
@@ -80,10 +80,10 @@ import 'package:flutter/material.dart';
 
 class AvailableColors {
   static const List<Color> colors = [
-    Color.fromARGB(255, 189, 189, 189), //Grey
-    Color.fromARGB(255, 255, 198, 211), //Pink
-    Color.fromARGB(255, 255, 110, 102), //Red
-    Color.fromARGB(255, 195, 177, 225), //Purple
+    Color(0xFFBDBDBD), //Grey
+    Color(0xFFFFC6D3), //Pink
+    Color(0xFFFF6E66), //Red
+    Color(0xFFC3B1E1), //Purple
     Color.fromARGB(255, 185, 195, 208), //Light Blue
     Color.fromARGB(255, 43, 58, 87), //Blue
     Color.fromARGB(255, 208, 250, 207), //Light green
@@ -93,104 +93,149 @@ class AvailableColors {
   ];
 }
 
-class GreyTheme {
-  int colorThemeId = 0;
-  //Light Mode
-  ThemeData lightMode = ThemeData(
-      brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
-        surface: Color.fromARGB(255, 224, 224, 224),
-        primary: Color.fromARGB(255, 204, 204, 204),
-        secondary: Color.fromARGB(255, 189, 189, 189),
-        tertiary: Color.fromARGB(255, 174, 174, 174),
-        inversePrimary: Color.fromARGB(255, 102, 102, 102),
-      ));
+//Default Values that dont change
+final Color error = Color.fromARGB(255, 176, 0, 32);
+final Color darkError = Color.fromARGB(255, 207, 102, 121);
 
-  // Dark Mode
+class GreyTheme {
+  Color seedColor = Color(0xFFBDBDBD);
+  int colorThemeId = 0;
+  ThemeData lightMode = ThemeData(
+    primaryColor: Color(0xFFBDBDBD),
+    colorScheme: ColorScheme.light(
+      surface: Color(0xFFE0E0E0), //300
+      onSurface: Color(0xFF212121), //800
+      primary: Color(0xFFcacaca), //400
+      onPrimary: Color(0xFF212121), //800
+      secondary: Color(0xFF9E9E9E), //500 
+      onSecondary: Color(0xFF212121), //900
+      tertiary: Color(0xFF757575), //600
+      onTertiary: Color(0xFFEEEEEE), //200
+      error: error,
+      onError: Color(0xFFE0E0E0)
+  ));
+
   ThemeData darkMode = ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
-        surface: Color.fromARGB(255, 30, 30, 30),
-        primary: Color.fromARGB(255, 102, 102, 102),
-        secondary: Color.fromARGB(255, 119, 119, 119),
-        tertiary: Color.fromARGB(255, 204, 204, 204),
-        inversePrimary: Color.fromARGB(255, 174, 174, 174),
-      ));
+    primaryColor: Color(0xFFBDBDBD),
+    colorScheme: ColorScheme.dark(
+      surface: Color(0xFF212121), //800
+      onSurface: Color(0xFFF5F5F5), //100
+      primary: Color(0xFF616161), //700
+      onPrimary: Color(0xFFF5F5F5), //100
+      secondary: Color(0xFF757575), //600 
+      onSecondary: Color(0xFFF5F5F5), //100
+      tertiary: Color(0xFF9E9E9E), //500
+      onTertiary: Color(0xFFF5F5F5), //100
+      error: error,
+      onError: Color(0xFFF5F5F5)
+  ));
 }
 
 class PinkTheme {
+  Color seedColor = Color(0xFFFFC6D3);
   int colorThemeId = 1;
 
   ThemeData lightMode = ThemeData(
-      brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
-        surface: Color.fromARGB(255, 255, 224, 230),
-        primary: Color.fromARGB(255, 255, 211, 220),
-        secondary: Color.fromARGB(255, 255, 198, 211),
-        tertiary: Color.fromARGB(255, 240, 185, 198),
-        inversePrimary: Color.fromARGB(255, 204, 132, 142),
-      ));
+    primaryColor: Color(0xFFFFC6D3),
+    colorScheme: ColorScheme.light(
+      surface: Color(0xFFffe5ea), //300
+      onSurface: Color(0xFF997f84), //800
+      primary: Color(0xFFffd3dc), //400
+      onPrimary: Color(0xFF332a2c), //800
+      secondary: Color(0xFFcca9b0), //500 
+      onSecondary: Color(0xFF332a2c), //900
+      tertiary: Color(0xFF806a6e), //600
+      onTertiary: Color(0xFFffe9ee), //200
+      error: error,
+      onError: Color(0xFFfff6f8) //50
+  ));
 
-// Dark Mode
   ThemeData darkMode = ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
-        surface: Color.fromARGB(255, 30, 30, 30),
-        primary: Color.fromARGB(255, 204, 132, 142),
-        secondary: Color.fromARGB(255, 219, 155, 166),
-        tertiary: Color.fromARGB(255, 255, 211, 220),
-        inversePrimary: Color.fromARGB(255, 240, 185, 198),
-      ));
+    primaryColor: Color(0xFFFFC6D3),
+    colorScheme: ColorScheme.dark(
+      surface: Color(0xFF332a2c), //800
+      onSurface: Color(0xFFfff6f8), //100
+      primary: Color(0xFF4c3f42), //700
+      onPrimary: Color(0xFFfff2f5), //100
+      secondary: Color(0xFF665458), //600 
+      onSecondary: Color(0xFFffedf1), //100
+      tertiary: Color(0xFF806a6e), //500
+      onTertiary: Color(0xFFffe9ee), //100
+      error: error,
+      onError: Color(0xFFfff6f8) //50
+  ));
+
+  
 }
 
 class RedTheme {
+  Color seedColor = Color(0xFFFF6E66);
   int colorThemeId = 2;
-  //Light Mode
-  ThemeData lightMode = ThemeData(
-      brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
-        surface: Color.fromARGB(255, 255, 171, 163),
-        primary: Color.fromARGB(255, 255, 140, 125),
-        secondary: Color.fromARGB(255, 255, 110, 102),
-        tertiary: Color.fromARGB(255, 240, 85, 77),
-        inversePrimary: Color.fromARGB(255, 204, 45, 39),
-      ));
 
-// Dark Mode
+  ThemeData lightMode = ThemeData(
+    primaryColor: Color(0xFFFF6E66),
+    colorScheme: ColorScheme.light(
+      surface: Color(0xFFffd4d1), //300
+      onSurface: Color(0xFF331614), //800
+      primary: Color(0xFFffa8a3), //400
+      onPrimary: Color(0xFF331614), //800
+      secondary: Color(0xFFffb7b3), //500 
+      onSecondary: Color(0xFF190b0a), //900
+      tertiary: Color(0xFF662c29), //600
+      onTertiary: Color(0xFFff8b85), //200
+      error: error,
+      onError: Color(0xFFffc5c2) //50
+  ));
+
   ThemeData darkMode = ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
-        surface: Color.fromARGB(255, 30, 30, 30),
-        primary: Color.fromARGB(255, 204, 45, 39),
-        secondary: Color.fromARGB(255, 219, 77, 68),
-        tertiary: Color.fromARGB(255, 255, 140, 125),
-        inversePrimary: Color.fromARGB(255, 240, 85, 77),
-      ));
+    primaryColor: Color(0xFFFF6E66),
+    colorScheme: ColorScheme.dark(
+      surface: Color(0xFF331614), //800
+      onSurface: Color(0xFFff7d75), //100
+      primary: Color(0xFF4c211f), //700
+      onPrimary: Color(0xFFff7d75), //100
+      secondary: Color(0xFF662c29), //600 
+      onSecondary: Color(0xFFff7d75), //100
+      tertiary: Color(0xFF803733), //500
+      onTertiary: Color(0xFFff7d75), //100
+      error: error,
+      onError: Color(0xFFffc5c2) //50
+  ));
 }
 
 class PurpleTheme {
+  Color seedColor = Color(0xFFC3B1E1);
   int colorThemeId = 3;
-  //Light Mode
-  ThemeData lightMode = ThemeData(
-      brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
-        surface: Color.fromARGB(255, 201, 185, 228),
-        primary: Color.fromARGB(255, 195, 177, 225),
-        secondary: Color.fromARGB(255, 231, 223, 243),
-        tertiary: Color.fromARGB(255, 237, 231, 246),
-        inversePrimary: Color.fromARGB(255, 74, 66, 86),
-      ));
 
-  //Dark Mode
+    ThemeData lightMode = ThemeData(
+      primaryColor: Color(0xFFC3B1E1),
+    colorScheme: ColorScheme.light(
+      surface: Color(0xFFede8f6), //300
+      onSurface: Color(0xFF27232d), //800
+      primary: Color(0xFFe1d8f0), //400
+      onPrimary: Color(0xFF27232d), //800
+      secondary: Color(0xFFcfc1e7), //500 
+      onSecondary: Color(0xFF131216), //900
+      tertiary: Color(0xFF9c8eb4), //600
+      onTertiary: Color(0xFFede8f6), //200
+      error: error,
+      onError: Color(0xFFf3eff9) //50
+  ));
+
   ThemeData darkMode = ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
-        surface: Color.fromARGB(255, 2, 1, 2),
-        primary: Color.fromARGB(255, 74, 66, 86),
-        secondary: Color.fromARGB(255, 96, 87, 112),
-        tertiary: Color.fromARGB(255, 195, 177, 225),
-        inversePrimary: Color.fromARGB(255, 237, 231, 246),
-      ));
+    primaryColor: Color(0xFFC3B1E1),
+    colorScheme: ColorScheme.dark(
+      surface: Color(0xFF27232d), //800
+      onSurface: Color(0xFFf3eff9), //100
+      primary: Color(0xFF4e475a), //700
+      onPrimary: Color(0xFFede8f6), //100
+      secondary: Color(0xFF756a87), //600 
+      onSecondary: Color(0xFFe7e0f3), //100
+      tertiary: Color(0xFFb09fcb), //500
+      onTertiary: Color(0xFFf3eff9), //100
+      error: error,
+      onError: Color(0xFFf3eff9) //50
+  ));
 }
 
 class LightBlueTheme {

@@ -19,24 +19,24 @@ class NeumorphicTextField extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: fieldTheme?.colorScheme.inversePrimary ?? screenTheme.colorScheme.inversePrimary,
+          color: fieldTheme?.colorScheme.tertiary ?? screenTheme.colorScheme.tertiary,
         ),
         child: Center(
           child: TextField(
             onChanged: onChanged,
-            cursorColor: screenTheme.colorScheme.primary,
+            cursorColor: screenTheme.colorScheme.onTertiary,
             cursorHeight: cursorHeight,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: fontSize,
-              color: screenTheme.colorScheme.primary
+              color: screenTheme.colorScheme.onTertiary
             ),
           controller: textController,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,
             hintStyle: TextStyle(
-              color: screenTheme.colorScheme.primary
+              color: screenTheme.colorScheme.onTertiary
             ),
             
           ),

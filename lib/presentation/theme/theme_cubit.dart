@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teacher_gradebook/presentation/theme/colors.dart';
+import 'package:teacher_gradebook/presentation/theme/colors_copy.dart';
 
 class ThemeCubit extends Cubit<ThemeData> {
   final List<dynamic> colorThemes = [

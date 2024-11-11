@@ -16,10 +16,10 @@ class NeumorphicTextButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: buttonTheme?.colorScheme.inversePrimary ?? buttonColor ?? screenTheme.colorScheme.inversePrimary,
+          color: buttonTheme?.colorScheme.tertiary ?? buttonColor ?? screenTheme.colorScheme.tertiary,
       
         ),
-      child: Center(child: Text(buttonText, style: TextStyle(color: buttonTheme?.colorScheme.primary ?? screenTheme.colorScheme.primary, fontSize: 17),)),),
+      child: Center(child: Text(buttonText, style: TextStyle(color: buttonTheme?.colorScheme.onTertiary ?? screenTheme.colorScheme.onTertiary, fontSize: 17),)),),
     );
   }
 }

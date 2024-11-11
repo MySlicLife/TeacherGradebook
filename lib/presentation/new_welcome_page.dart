@@ -19,7 +19,7 @@ import '../modules/dialog/color_picker_dialog.dart';
 import '../storage/course/course.dart';
 import '../storage/school_year/year.dart';
 import '../storage/school_year/year_cubit.dart';
-import 'theme/colors.dart';
+import 'theme/colors_copy.dart';
 import 'theme/theme_cubit.dart';
 import 'widgets/misc/grade_breakdown.dart';
 
@@ -46,13 +46,14 @@ class _YearLandingPageState extends State<YearLandingPage>
   late Course? selectedCourse;
   late Map<String, dynamic> selectedItemStatistics = {};
   late int? selectedYearColor;
-  late int? addYearColor;
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
 
   bool addYear = false;
   bool colorChanged = false;
   bool textChanged = false;
+  int? addYearColor;
+
   final yearTextController = TextEditingController();
   final schoolNameController = TextEditingController();
   final locationController = TextEditingController();
@@ -182,7 +183,7 @@ class _YearLandingPageState extends State<YearLandingPage>
     return BlocBuilder<ThemeCubit, ThemeData>(
       builder: (themeContext, welcomeThemeState) {
         return Scaffold(
-          backgroundColor: welcomeThemeState.primaryColor,
+          backgroundColor: welcomeThemeState.colorScheme.surface,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -206,16 +207,14 @@ class _YearLandingPageState extends State<YearLandingPage>
                                 "Welcome back ${widget.teacherName}!",
                                 style: TextStyle(
                                   fontSize: 45,
-                                  color: welcomeThemeState
-                                      .colorScheme.inversePrimary,
+                                  color: welcomeThemeState.colorScheme.onSurface,
                                 ),
                               ),
                               Text(
                                 "Please select a year below..",
                                 style: TextStyle(
                                   fontSize: 30,
-                                  color: welcomeThemeState
-                                      .colorScheme.inversePrimary,
+                                  color: welcomeThemeState.colorScheme.onSurface,
                                 ),
                               ),
                             ],
@@ -238,8 +237,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                     padding: const EdgeInsets.only(bottom: 15),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          color: welcomeThemeState
-                                              .colorScheme.secondary,
+                                          color: welcomeThemeState.colorScheme.surface,
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(15))),
                                       child: Column(
@@ -250,17 +248,13 @@ class _YearLandingPageState extends State<YearLandingPage>
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(7),
                                                   topRight: Radius.circular(7)),
-                                              color: welcomeThemeState
-                                                  .colorScheme.inversePrimary,
+                                              color: welcomeThemeState.colorScheme.primary,
                                             ),
                                             indicatorPadding: EdgeInsets.all(0),
-                                            dividerColor: welcomeThemeState
-                                                .colorScheme.inversePrimary,
+                                            dividerColor: welcomeThemeState.colorScheme.primary,
                                             dividerHeight: 5,
-                                            indicatorColor: welcomeThemeState
-                                                .colorScheme.secondary,
-                                            labelColor: welcomeThemeState
-                                                .colorScheme.secondary,
+                                            indicatorColor: welcomeThemeState.colorScheme.surface,
+                                            labelColor: welcomeThemeState.colorScheme.onSurface,
                                             controller: _tabController,
                                             tabs: decades
                                                 .map((decade) => Padding(
@@ -283,14 +277,10 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     mainAxisExtent:
                                                         75, // Height of each grid item
                                                   ),
-                                                  itemCount:
-                                                      groupedYears[decade]
-                                                              ?.length ??
-                                                          0,
+                                                  itemCount: groupedYears[decade]?.length ?? 0,
                                                   itemBuilder:
                                                       (context, index) {
-                                                    final year = groupedYears[
-                                                        decade]![index];
+                                                    final year = groupedYears[decade]![index];
                                                     return Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -302,37 +292,18 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         onPressed: () {
                                                           setState(() {
                                                             selectedYear = year;
-                                                            yearTextController
-                                                                    .text =
-                                                                year.year;
-                                                            selectedStartDate =
-                                                                year.startDate;
-                                                            selectedEndDate =
-                                                                year.endDate;
-                                                            locationController
-                                                                    .text =
-                                                                year.location;
-                                                            schoolNameController
-                                                                    .text =
-                                                                year.schoolName;
-                                                            selectedYearTheme =
-                                                                getCurrentTheme(
-                                                              year.yearColorId,
-                                                              themeCubit,
-                                                            );
-                                                            calculateStatistic(
-                                                                null,
-                                                                selectedYear!);
-
+                                                            yearTextController.text = year.year;
+                                                            selectedStartDate = year.startDate;
+                                                            selectedEndDate = year.endDate;
+                                                            locationController.text = year.location;
+                                                            schoolNameController.text = year.schoolName;
+                                                            selectedYearTheme = getCurrentTheme(year.yearColorId, themeCubit,);
+                                                            calculateStatistic(null, selectedYear!);
                                                             addYear = false;
                                                             textChanged = false;
                                                           });
                                                         },
-                                                        buttonTheme:
-                                                            getCurrentTheme(
-                                                          year.yearColorId,
-                                                          themeCubit,
-                                                        ),
+                                                        buttonTheme:getCurrentTheme(year.yearColorId,themeCubit,),
                                                         screenTheme:
                                                             welcomeThemeState,
                                                       ),
@@ -388,9 +359,12 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           addYear = true;
                                           selectedYear = null;
                                           textChanged = false;
-                                          selectedYearTheme =
-                                              getCurrentTheme(0, themeCubit);
+                                          selectedYearTheme = getCurrentTheme(widget.mainAppThemeId, themeCubit);
                                           yearTextController.text = "";
+                                          locationController.text = "";
+                                          schoolNameController.text = "";
+                                          selectedStartDate = null;
+                                          selectedEndDate = null;
                                         });
                                       },
                                       buttonText: "Add year...",
@@ -405,6 +379,9 @@ class _YearLandingPageState extends State<YearLandingPage>
                                     child: NeumorphicIconButton(
                                       onPressed: () {
                                         themeCubit.toggleTheme();
+                                        setState(() {
+                                            selectedYearTheme = getCurrentTheme(selectedYear != null ? selectedYear!.yearColorId : widget.mainAppThemeId ,themeCubit,);
+                                        });
                                       },
                                       buttonIcon: Icons.settings,
                                       currentTheme: welcomeThemeState,
@@ -428,8 +405,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: selectedYearTheme?.colorScheme.secondary ??
-                                  welcomeThemeState.colorScheme.primary,
+                              color: selectedYearTheme?.colorScheme.primary ?? welcomeThemeState.colorScheme.primary,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -445,12 +421,9 @@ class _YearLandingPageState extends State<YearLandingPage>
                                         textChanged = true;
                                       });
                                     },
-                                    hintText: yearTextController.text.isNotEmpty
-                                        ? yearTextController.text
-                                        : "Year",
+                                    hintText: yearTextController.text.isNotEmpty ? yearTextController.text : "Year",
                                     textController: yearTextController,
-                                    screenTheme:
-                                        selectedYearTheme ?? welcomeThemeState,
+                                    screenTheme: selectedYearTheme ?? welcomeThemeState,
                                     fontSize: 80,
                                     cursorHeight: 75,
                                   ),
@@ -461,8 +434,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       //Start Date
                                       GestureDetector(
@@ -471,11 +443,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           height: 50,
                                           width: 200,
                                           decoration: BoxDecoration(
-                                              color: selectedYearTheme
-                                                      ?.colorScheme
-                                                      .inversePrimary ??
-                                                  welcomeThemeState
-                                                      .colorScheme.primary,
+                                              color: selectedYearTheme?.colorScheme.tertiary ?? welcomeThemeState.colorScheme.tertiary,
                                               borderRadius:
                                                   BorderRadius.circular(15)),
                                           child: Center(
@@ -486,11 +454,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                       .format(
                                                           selectedStartDate!),
                                               style: TextStyle(
-                                                  color: selectedYearTheme
-                                                          ?.colorScheme
-                                                          .primary ??
-                                                      welcomeThemeState
-                                                          .colorScheme.primary,
+                                                  color: selectedYearTheme?.colorScheme.onTertiary ?? welcomeThemeState.colorScheme.onTertiary,
                                                   fontSize: 18),
                                             ),
                                           ),
@@ -499,19 +463,12 @@ class _YearLandingPageState extends State<YearLandingPage>
 
                                       // Dash
                                       Container(
-                                        width:
-                                            60, // Set a fixed width for the large dash
+                                        width: 60, // Set a fixed width for the large dash
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          '-',
+                                        child: Text('-',
                                           style: TextStyle(
-                                            fontSize:
-                                                50, // Increase font size for the large dash
-                                            color: selectedYearTheme
-                                                    ?.colorScheme
-                                                    .inversePrimary ??
-                                                welcomeThemeState
-                                                    .colorScheme.inversePrimary,
+                                            fontSize:50, // Increase font size for the large dash
+                                            color: selectedYearTheme?.colorScheme.onTertiary ?? welcomeThemeState.colorScheme.onTertiary,
                                           ),
                                         ),
                                       ),
@@ -523,25 +480,13 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           height: 50,
                                           width: 200,
                                           decoration: BoxDecoration(
-                                              color: selectedYearTheme
-                                                      ?.colorScheme
-                                                      .inversePrimary ??
-                                                  welcomeThemeState
-                                                      .colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
+                                              color: selectedYearTheme?.colorScheme.tertiary ?? welcomeThemeState.colorScheme.tertiary,
+                                              borderRadius: BorderRadius.circular(15)),
                                           child: Center(
                                             child: Text(
-                                              selectedEndDate == null
-                                                  ? "Tap to select a date"
-                                                  : DateFormat('MMMM dd, yyyy')
-                                                      .format(selectedEndDate!),
+                                              selectedEndDate == null ? "Tap to select a date" : DateFormat('MMMM dd, yyyy').format(selectedEndDate!),
                                               style: TextStyle(
-                                                  color: selectedYearTheme
-                                                          ?.colorScheme
-                                                          .primary ??
-                                                      welcomeThemeState
-                                                          .colorScheme.primary,
+                                                  color: selectedYearTheme?.colorScheme.onTertiary ?? welcomeThemeState.colorScheme.onTertiary,
                                                   fontSize: 18),
                                             ),
                                           ),
@@ -564,10 +509,8 @@ class _YearLandingPageState extends State<YearLandingPage>
                                         child: NeumorphicTextField(
                                             cursorHeight: 50,
                                             hintText: "School Name",
-                                            textController:
-                                                schoolNameController,
-                                            screenTheme: selectedYearTheme ??
-                                                welcomeThemeState,
+                                            textController: schoolNameController,
+                                            screenTheme: selectedYearTheme ?? welcomeThemeState,
                                             fontSize: 25),
                                       ),
                                       SizedBox(
@@ -579,11 +522,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           "|",
                                           style: TextStyle(
                                               fontSize: 50,
-                                              color: selectedYearTheme
-                                                      ?.colorScheme
-                                                      .inversePrimary ??
-                                                  welcomeThemeState.colorScheme
-                                                      .inversePrimary),
+                                              color: selectedYearTheme?.colorScheme.onTertiary ?? welcomeThemeState.colorScheme.onTertiary),
                                         ),
                                       ),
                                       //Location
@@ -591,10 +530,8 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           child: NeumorphicTextField(
                                               cursorHeight: 50,
                                               hintText: "Location",
-                                              textController:
-                                                  locationController,
-                                              screenTheme: selectedYearTheme ??
-                                                  welcomeThemeState,
+                                              textController: locationController,
+                                              screenTheme: selectedYearTheme ?? welcomeThemeState,
                                               fontSize: 25)),
                                     ],
                                   ),
@@ -619,26 +556,19 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                 context: context,
                                                 builder: (dialogContext) {
                                                   return BlocProvider.value(
-                                                    value: context
-                                                        .read<CourseCubit>(),
+                                                    value: context.read<CourseCubit>(),
                                                     child: CourseDialog(
-                                                        yearId:
-                                                            selectedYear!.id,
+                                                        yearId: selectedYear!.id,
                                                         isEditing: false),
                                                   );
                                                 },
                                               );
                                             },
-                                            screenTheme: selectedYearTheme ??
-                                                welcomeThemeState,
-                                            onOptionChanged:
-                                                (newSelectedCourse) {
+                                            screenTheme: selectedYearTheme ?? welcomeThemeState,
+                                            onOptionChanged: (newSelectedCourse) {
                                               setState(() {
-                                                selectedCourse =
-                                                    newSelectedCourse;
-                                                calculateStatistic(
-                                                    selectedCourse,
-                                                    selectedYear!);
+                                                selectedCourse = newSelectedCourse;
+                                                calculateStatistic(selectedCourse,selectedYear!);
                                               });
                                             },
                                           );
@@ -646,9 +576,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                             is CourseInitial) {
                                           return YearPageClassToggle(
                                               selectedYear: selectedYear,
-                                              courses: selectedYear?.courses
-                                                      .toList() ??
-                                                  dummyCourses,
+                                              courses: selectedYear?.courses.toList() ?? dummyCourses,
                                               onPressed: () {
                                                 if (addYear == true) {
                                                 } else {
@@ -656,31 +584,23 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     context: context,
                                                     builder: (dialogContext) {
                                                       return BlocProvider.value(
-                                                        value: context.read<
-                                                            CourseCubit>(),
+                                                        value: context.read<CourseCubit>(),
                                                         child: CourseDialog(
-                                                            yearId:
-                                                                selectedYear!
-                                                                    .id,
+                                                            yearId:selectedYear!.id,
                                                             isEditing: false),
                                                       );
                                                     },
                                                   );
                                                 }
                                               },
-                                              screenTheme: selectedYearTheme ??
-                                                  welcomeThemeState,
-                                              onOptionChanged:
-                                                  (newSelectedCourse) {
+                                              screenTheme: selectedYearTheme ?? welcomeThemeState,
+                                              onOptionChanged: (newSelectedCourse) {
                                                 if (addYear == true) {
                                                   null;
                                                 } else {
                                                   setState(() {
-                                                    selectedCourse =
-                                                        newSelectedCourse;
-                                                    calculateStatistic(
-                                                        selectedCourse,
-                                                        selectedYear!);
+                                                    selectedCourse = newSelectedCourse;
+                                                    calculateStatistic(selectedCourse,selectedYear!);
                                                   });
                                                 }
                                               });
@@ -697,80 +617,54 @@ class _YearLandingPageState extends State<YearLandingPage>
                                 // Statistics preview
                                 Expanded(
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       // Left column: student count and grade breakdown
                                       Expanded(
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  color: selectedYearTheme
-                                                          ?.colorScheme
-                                                          .tertiary ??
-                                                      welcomeThemeState
-                                                          .colorScheme
-                                                          .tertiary),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Total Students: ",
-                                                    style: TextStyle(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: selectedYearTheme
-                                                                ?.colorScheme
-                                                                .inversePrimary ??
-                                                            welcomeThemeState
-                                                                .colorScheme
-                                                                .inversePrimary),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    selectedCourse
-                                                            ?.students.length
-                                                            .toString() ??
-                                                        yearStudentList(
-                                                                selectedYear)
-                                                            ?.toString() ??
-                                                        "40",
-                                                    style: TextStyle(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: selectedYearTheme
-                                                                ?.colorScheme
-                                                                .inversePrimary ??
-                                                            welcomeThemeState
-                                                                .colorScheme
-                                                                .inversePrimary),
-                                                  ),
-                                                ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                    color: selectedYearTheme?.colorScheme.secondary ?? welcomeThemeState.colorScheme.secondary),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "Total Students: ",
+                                                      style: TextStyle(
+                                                          fontSize: 30,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      selectedCourse?.students.length.toString() ?? yearStudentList(selectedYear)?.toString() ?? "40",
+                                                      style: TextStyle(
+                                                          fontSize: 30,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            GradeBreakdown(
-                                              selectedYear: selectedYear,
-                                              currentCourse: selectedCourse,
-                                              screenTheme: selectedYearTheme ??
-                                                  welcomeThemeState,
-                                            ),
-                                          ],
+                                              GradeBreakdown(
+                                                widgetWidth: screenWidth / 6 ,
+                                                selectedYear: selectedYear,
+                                                currentCourse: selectedCourse,
+                                                screenTheme: selectedYearTheme ?? welcomeThemeState,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
 
                                       VerticalDivider(
                                         thickness: 2,
-                                        color: selectedYearTheme
-                                                ?.colorScheme.inversePrimary ??
-                                            welcomeThemeState
-                                                .colorScheme.inversePrimary,
+                                        color: selectedYearTheme?.colorScheme.onPrimary ?? welcomeThemeState.colorScheme.onPrimary,
                                         width: 20,
                                       ),
 
@@ -780,13 +674,8 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: selectedYearTheme
-                                                        ?.colorScheme
-                                                        .tertiary ??
-                                                    welcomeThemeState
-                                                        .colorScheme.tertiary,
+                                                borderRadius: BorderRadius.circular(15),
+                                                color: selectedYearTheme?.colorScheme.secondary ?? welcomeThemeState.colorScheme.secondary,
                                               ),
                                               height: 200,
                                               child: Column(
@@ -796,26 +685,15 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   Text(
                                                     "Highest Grade",
                                                     style: TextStyle(
-                                                      color: selectedYearTheme
-                                                              ?.colorScheme
-                                                              .inversePrimary ??
-                                                          welcomeThemeState
-                                                              .colorScheme
-                                                              .inversePrimary,
+                                                      color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary,
                                                       fontSize: 30,
                                                     ),
                                                   ),
                                                   Text(
                                                     addYear
-                                                        ? 'Temporary | 100'
-                                                        : "${selectedItemStatistics['max']['student']} | ${selectedItemStatistics['max']['grade']}",
+                                                        ? 'Temporary | 100' : "${selectedItemStatistics['max']['student']} | ${selectedItemStatistics['max']['grade']}",
                                                     style: TextStyle(
-                                                      color: selectedYearTheme
-                                                              ?.colorScheme
-                                                              .inversePrimary ??
-                                                          welcomeThemeState
-                                                              .colorScheme
-                                                              .inversePrimary,
+                                                      color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary,
                                                       fontSize: 20,
                                                     ),
                                                   ),
@@ -823,26 +701,15 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   Text(
                                                     "Lowest Grade",
                                                     style: TextStyle(
-                                                      color: selectedYearTheme
-                                                              ?.colorScheme
-                                                              .inversePrimary ??
-                                                          welcomeThemeState
-                                                              .colorScheme
-                                                              .inversePrimary,
+                                                      color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary,
                                                       fontSize: 30,
                                                     ),
                                                   ),
                                                   Text(
                                                     addYear
-                                                        ? 'Temporary | 50'
-                                                        : "${selectedItemStatistics['min']['student']} | ${selectedItemStatistics['min']['grade']}",
+                                                        ? 'Temporary | 50' : "${selectedItemStatistics['min']['student']} | ${selectedItemStatistics['min']['grade']}",
                                                     style: TextStyle(
-                                                      color: selectedYearTheme
-                                                              ?.colorScheme
-                                                              .inversePrimary ??
-                                                          welcomeThemeState
-                                                              .colorScheme
-                                                              .inversePrimary,
+                                                      color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary,
                                                       fontSize: 20,
                                                     ),
                                                   ),
@@ -884,9 +751,8 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   });
                                                 }
                                               },
-                                              screenTheme: selectedYearTheme ??
-                                                  welcomeThemeState,
-                                              buttonColor: Colors.red,
+                                              screenTheme: selectedYearTheme ??  welcomeThemeState,
+                                              buttonColor: selectedYearTheme?.colorScheme.error ?? welcomeThemeState.colorScheme.error,
                                             ),
                                           ),
 
@@ -900,36 +766,21 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   await _openColorPicker(
                                                       selectedYear);
                                                   setState(() {
-                                                    selectedYearTheme =
-                                                        getCurrentTheme(
-                                                            selectedYear
-                                                                    ?.yearColorId ??
-                                                                addYearColor!,
-                                                            themeCubit);
+                                                    selectedYearTheme = getCurrentTheme(
+                                                      selectedYear?.yearColorId ?? addYearColor!, 
+                                                      themeCubit);
                                                   });
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    color: selectedYearTheme
-                                                            ?.colorScheme
-                                                            .primary ??
-                                                        welcomeThemeState
-                                                            .colorScheme
-                                                            .primary,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    color: selectedYearTheme?.primaryColor ?? welcomeThemeState.primaryColor,
                                                   ),
                                                   child: Center(
                                                       child: Text(
                                                     'Color',
                                                     style: TextStyle(
-                                                        color: selectedYearTheme
-                                                                ?.colorScheme
-                                                                .inversePrimary ??
-                                                            welcomeThemeState
-                                                                .colorScheme
-                                                                .inversePrimary,
+                                                        color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary,
                                                         fontSize: 17),
                                                   )),
                                                 ),
@@ -947,54 +798,33 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   buttonText: "Add Year",
                                                   onPressed: () {
                                                     // Check if the user is adding a new year
-                                                    bool yearExists = yearState
-                                                        .schoolYears
-                                                        .any(
-                                                      (year) =>
-                                                          year.year ==
-                                                          yearTextController
-                                                              .text,
-                                                    );
+                                                    bool yearExists = yearState.schoolYears.any((year) => year.year == yearTextController.text,);
 
                                                     if (!yearExists) {
                                                       // Add the year if it doesn't already exist
-                                                      context
-                                                          .read<YearCubit>()
-                                                          .addYear(
-                                                            yearTextController
-                                                                .text,
+                                                      context.read<YearCubit>().addYear(
+                                                            yearTextController.text,
                                                             addYearColor ?? 0,
                                                             selectedStartDate!,
                                                             selectedEndDate!,
-                                                            schoolNameController
-                                                                .text,
-                                                            locationController
-                                                                .text,
+                                                            schoolNameController.text,
+                                                            locationController.text,
                                                           );
                                                     } else {
                                                       // Show an error SnackBar if the year already exists
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
+                                                      ScaffoldMessenger.of(context).showSnackBar(
                                                         SnackBar(
-                                                          content: Text(
-                                                              "This year already exists"),
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          duration: Duration(
-                                                              seconds: 3),
+                                                          content: Text("This year already exists", style: TextStyle(color: selectedYearTheme?.colorScheme.onError ?? welcomeThemeState.colorScheme.onError),),
+                                                          backgroundColor: selectedYearTheme?.colorScheme.error ?? welcomeThemeState.colorScheme.error,
+                                                          duration: Duration(seconds: 3),
                                                         ),
                                                       );
                                                     }
 
-                                                    schoolNameController.text ==
-                                                        '';
-                                                    locationController.text ==
-                                                        '';
+                                                    schoolNameController.text == '';
+                                                    locationController.text == '';
                                                   },
-                                                  screenTheme:
-                                                      selectedYearTheme ??
-                                                          welcomeThemeState,
+                                                  screenTheme: selectedYearTheme ?? welcomeThemeState,
                                                 ),
                                               );
                                             } else {
@@ -1004,71 +834,41 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     width: 25,
                                                   ),
                                                   // Save changes to year
-                                                  if (textChanged == true ||
-                                                      colorChanged == true)
+                                                  if (textChanged == true || colorChanged == true)
                                                     SizedBox(
                                                       width: 125,
-                                                      child:
-                                                          NeumorphicTextButton(
-                                                        buttonText:
-                                                            "Save Changes",
+                                                      child: NeumorphicTextButton(
+                                                        buttonText: "Save Changes",
                                                         onPressed: () {
                                                           // Check if the user is adding a new year
-                                                          bool yearExists =
-                                                              yearState
-                                                                  .schoolYears
-                                                                  .any(
-                                                            (year) =>
-                                                                year.year ==
-                                                                yearTextController
-                                                                    .text,
+                                                          bool yearExists = yearState.schoolYears.any((year) => year.year == yearTextController.text,
                                                           );
 
                                                           if (!yearExists) {
                                                             // Add the year if it doesn't already exist
-                                                            context
-                                                                .read<
-                                                                    YearCubit>()
-                                                                .editYear(
-                                                                  selectedYear!
-                                                                      .id,
-                                                                  yearTextController
-                                                                      .text,
+                                                            context.read<YearCubit>().editYear(
+                                                                  selectedYear!.id,
+                                                                  yearTextController.text,
                                                                   selectedYearColor,
                                                                   selectedStartDate,
                                                                   selectedEndDate,
-                                                                  schoolNameController
-                                                                      .text,
-                                                                  locationController
-                                                                      .text,
+                                                                  schoolNameController.text,
+                                                                  locationController.text,
                                                                 );
                                                           } else {
                                                             // Show an error SnackBar if the year already exists
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
-                                                                content: Text(
-                                                                    "This year already exists"),
-                                                                backgroundColor:
-                                                                    Colors.red,
-                                                                duration:
-                                                                    Duration(
-                                                                        seconds:
-                                                                            3),
-                                                              ),
+                                                          content: Text("This year already exists", style: TextStyle(color: selectedYearTheme?.colorScheme.onError ?? welcomeThemeState.colorScheme.onError),),
+                                                          backgroundColor: selectedYearTheme?.colorScheme.error ?? welcomeThemeState.colorScheme.error,
+                                                          duration: Duration(seconds: 3),
+                                                        ),
                                                             );
                                                           }
-                                                          schoolNameController
-                                                                  .text ==
-                                                              '';
-                                                          locationController
-                                                                  .text ==
-                                                              '';
+                                                          schoolNameController.text == '';
+                                                          locationController.text == '';
                                                         },
-                                                        screenTheme:
-                                                            selectedYearTheme ??
-                                                                welcomeThemeState,
+                                                        screenTheme: selectedYearTheme ?? welcomeThemeState,
                                                       ),
                                                     ),
                                                   SizedBox(
@@ -1080,45 +880,25 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     child: NeumorphicTextButton(
                                                       buttonText: "Navigate",
                                                       onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(
+                                                        Navigator.of(context).pushReplacement(
                                                           MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MultiBlocProvider(
+                                                            builder: (context) => MultiBlocProvider(
                                                               providers: [
-                                                                BlocProvider(
-                                                                    create: (context) =>
-                                                                        CourseCubit(
-                                                                            TeacherRepo())),
-                                                                BlocProvider(
-                                                                    create: (context) =>
-                                                                        ThemeCubit()),
-                                                                BlocProvider(
-                                                                    create: (context) =>
-                                                                        AssignmentCubit(
-                                                                            TeacherRepo())),
-                                                                BlocProvider(
-                                                                    create: (context) =>
-                                                                        StudentCubit(
-                                                                            TeacherRepo())),
-                                                                BlocProvider(
-                                                                    create: (context) =>
-                                                                        GradeCubit(
-                                                                            TeacherRepo())),
+                                                                BlocProvider(create: (context) => CourseCubit(TeacherRepo())),
+                                                                BlocProvider(create: (context) => ThemeCubit()),
+                                                                BlocProvider(create: (context) => AssignmentCubit(TeacherRepo())),
+                                                                BlocProvider(create: (context) => StudentCubit(TeacherRepo())),
+                                                                BlocProvider(create: (context) => GradeCubit(TeacherRepo())),
                                                               ],
                                                               child: CoursePage(
-                                                                currentCourse:
-                                                                    selectedCourse!,
-                                                                currentYear:
-                                                                    selectedYear!,
+                                                                currentCourse:selectedCourse!,
+                                                                currentYear:selectedYear!,
                                                               ),
                                                             ),
                                                           ),
                                                         );
                                                       },
-                                                      screenTheme:
-                                                          selectedYearTheme ??
-                                                              welcomeThemeState,
+                                                      screenTheme: selectedYearTheme ?? welcomeThemeState,
                                                     ),
                                                   )
                                                 ],
@@ -1188,16 +968,14 @@ class _YearLandingPageState extends State<YearLandingPage>
     Map<String, dynamic> statistics = {};
 
     // Max Grade
-    Student highestStudent = studentList.firstWhere(
-        (student) => student.studentNumberGrade == statisticGradeList.max);
+    Student highestStudent = studentList.firstWhere((student) => student.studentNumberGrade == statisticGradeList.max);
     statistics['max'] = {
       'student': highestStudent.studentName,
       'grade': highestStudent.studentNumberGrade
     };
 
     // Min Grade
-    Student lowestStudent = studentList.firstWhere(
-        (student) => student.studentNumberGrade == statisticGradeList.min);
+    Student lowestStudent = studentList.firstWhere((student) => student.studentNumberGrade == statisticGradeList.min);
     statistics['min'] = {
       'student': lowestStudent.studentName,
       'grade': lowestStudent.studentNumberGrade
@@ -1219,7 +997,7 @@ class _YearLandingPageState extends State<YearLandingPage>
       context: context,
       builder: (context) => ColorPickerDialog(
         availableColors: AvailableColors.colors,
-        yearColorId: year?.yearColorId ?? 0,
+        yearColorId: year?.yearColorId ?? addYearColor ?? widget.mainAppThemeId,
       ),
     );
     if (colorPickerResult != null) {

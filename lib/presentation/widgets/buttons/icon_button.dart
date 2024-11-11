@@ -14,9 +14,9 @@ class NeumorphicIconButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: currentTheme.colorScheme.inversePrimary,      
+          color: currentTheme.colorScheme.tertiary,      
         ),
-      child: Icon(buttonIcon, color: currentTheme.colorScheme.primary),
+      child: Icon(buttonIcon, color: currentTheme.colorScheme.onTertiary),
           ),
     );
   }
