@@ -7,13 +7,12 @@ class GradeBreakdown extends StatefulWidget {
   final Course? currentCourse;
   final Year? selectedYear;
   final ThemeData screenTheme;
-  final double widgetWidth;
+
   const GradeBreakdown(
       {super.key,
       this.currentCourse,
       this.selectedYear,
-      required this.screenTheme,
-      required this.widgetWidth});
+      required this.screenTheme,});
 
   @override
   State<GradeBreakdown> createState() => _GradeBreakdownState();
@@ -33,7 +32,7 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
     };
 
     if (widget.currentCourse != null) {
-      //Count grades just for the course
+      // Count grades just for the course
       for (var student in widget.currentCourse!.students) {
         String letterGrade =
             student.studentLetterGrade ?? "N/A"; // Assuming this is a string
@@ -54,10 +53,10 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
       }
     } else {
       List<String> dummyGrades = [
-  "A", "B", "C", "A", "D", "B", "C", "A", "F", "C",
-  "B", "D", "A", "C", "F", "B", "A", "C", "D", "F",
-  "B", "A", "C", "D", "A", "B", "C", "F", "B", "A"
-];
+        "A", "B", "C", "A", "D", "B", "C", "A", "F", "C",
+        "B", "D", "A", "C", "F", "B", "A", "C", "D", "F",
+        "B", "A", "C", "D", "A", "B", "C", "F", "B", "A"
+      ];
 
       for (String grade in dummyGrades) {
         String letterGrade = grade;
@@ -68,58 +67,67 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
     }
 
     // Calculate maxValue safely
-    final double maxValue =
-        gradeCountMap.values.reduce((a, b) => a > b ? a : b).toDouble();
-    // Build the widget to display the grade breakdown
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "${widget.currentCourse?.courseName ?? widget.selectedYear?.year ?? "Example"} Grades",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: widget.screenTheme.colorScheme.onSecondary,
-          ),
-        ),
-        SizedBox(height: 10),
+    final double maxValue = gradeCountMap.values.reduce((a, b) => a > b ? a : b).toDouble();
 
-        // Create a row for each entry in the data map
-        for (int index = 0; index < gradeCountMap.length; index++)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Row(
-              children: [
-                // Bar label
-                SizedBox(
-                  width: 40,
-                  child: Text(
-                    gradeCountMap.entries.toList()[index].key,
-                    style: TextStyle(
-                        color: widget.screenTheme.colorScheme.onPrimary),
-                  ),
-                ),
-                // Bar itself
-                Container(
-                  width: (maxValue > 0
-                      ? (gradeCountMap.entries.toList()[index].value / maxValue) * widget.widgetWidth : 0), // Increase multiplier for visibility
-                  height: 20,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: widget.screenTheme.colorScheme.tertiary
-                  ),
-                ),
-                SizedBox(width: 10),
-                // Display the value at the end of the bar
-                Text(
-                  gradeCountMap.entries.toList()[index].value.toString(),
-                  style: TextStyle(
-                      color: widget.screenTheme.colorScheme.onPrimary),
-                ),
-              ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Available width minus padding for labels and margins
+        final double availableWidth = constraints.maxWidth - 60;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${widget.currentCourse?.courseName ?? widget.selectedYear?.year ?? "Example"} Grades",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: widget.screenTheme.colorScheme.onSecondary,
+              ),
             ),
-          ),
-      ],
+            SizedBox(height: 10),
+
+            // Create a row for each entry in the data map
+            for (int index = 0; index < gradeCountMap.length; index++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  children: [
+                    // Bar label
+                    SizedBox(
+                      width: 40,
+                      child: Text(
+                        gradeCountMap.entries.toList()[index].key,
+                        style: TextStyle(
+                          color: widget.screenTheme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                    // Bar itself
+                    Container(
+                      width: maxValue > 0
+                          ? (gradeCountMap.entries.toList()[index].value / maxValue) * availableWidth
+                          : 0, // Scale the width relative to the available width
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: widget.screenTheme.colorScheme.tertiary,
+                      ),
+                    ),
+                    SizedBox(width: 10), // Spacing between bar and value
+                    // Display the value at the end of the bar
+                    Text(
+                      gradeCountMap.entries.toList()[index].value.toString(),
+                      style: TextStyle(
+                        color: widget.screenTheme.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
