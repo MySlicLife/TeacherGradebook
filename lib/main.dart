@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LandingPage());
