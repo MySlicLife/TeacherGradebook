@@ -10,10 +10,8 @@ class ThemeCubit extends Cubit<ThemeData> {
     PinkTheme(),
     RedTheme(),
     PurpleTheme(),
-    LightBlueTheme(),
     BlueTheme(),
     GreenTheme(),
-    DarkGreenTheme(),
     YellowTheme(),
     OrangeTheme(),
   ];
@@ -31,13 +29,14 @@ class ThemeCubit extends Cubit<ThemeData> {
   // Static method to get the initial theme
   static ThemeData _getInitialTheme(int index, bool isDarkMode) {
     final List<dynamic> themes = [
-      GreyTheme(),
-      RedTheme(),
-      PurpleTheme(),
-      BlueTheme(),
-      GreenTheme(),
-      YellowTheme(),
-      OrangeTheme(),
+    GreyTheme(),
+    PinkTheme(),
+    RedTheme(),
+    PurpleTheme(),
+    BlueTheme(),
+    GreenTheme(),
+    YellowTheme(),
+    OrangeTheme(),
     ];
 
     final theme = (index < 0 || index >= themes.length) ? themes[0] : themes[index];

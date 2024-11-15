@@ -17,19 +17,34 @@ const YearSchema = CollectionSchema(
   name: r'Year',
   id: 8541492288853816011,
   properties: {
-    r'year': PropertySchema(
+    r'endDate': PropertySchema(
       id: 0,
+      name: r'endDate',
+      type: IsarType.dateTime,
+    ),
+    r'location': PropertySchema(
+      id: 1,
+      name: r'location',
+      type: IsarType.string,
+    ),
+    r'schoolName': PropertySchema(
+      id: 2,
+      name: r'schoolName',
+      type: IsarType.string,
+    ),
+    r'startDate': PropertySchema(
+      id: 3,
+      name: r'startDate',
+      type: IsarType.dateTime,
+    ),
+    r'year': PropertySchema(
+      id: 4,
       name: r'year',
       type: IsarType.string,
     ),
     r'yearColorId': PropertySchema(
-      id: 1,
+      id: 5,
       name: r'yearColorId',
-      type: IsarType.long,
-    ),
-    r'yearColorInt': PropertySchema(
-      id: 2,
-      name: r'yearColorInt',
       type: IsarType.long,
     )
   },
@@ -61,6 +76,8 @@ int _yearEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.location.length * 3;
+  bytesCount += 3 + object.schoolName.length * 3;
   bytesCount += 3 + object.year.length * 3;
   return bytesCount;
 }
@@ -71,9 +88,12 @@ void _yearSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.year);
-  writer.writeLong(offsets[1], object.yearColorId);
-  writer.writeLong(offsets[2], object.yearColorInt);
+  writer.writeDateTime(offsets[0], object.endDate);
+  writer.writeString(offsets[1], object.location);
+  writer.writeString(offsets[2], object.schoolName);
+  writer.writeDateTime(offsets[3], object.startDate);
+  writer.writeString(offsets[4], object.year);
+  writer.writeLong(offsets[5], object.yearColorId);
 }
 
 Year _yearDeserialize(
@@ -83,9 +103,12 @@ Year _yearDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Year(
-    year: reader.readString(offsets[0]),
-    yearColorId: reader.readLong(offsets[1]),
-    yearColorInt: reader.readLong(offsets[2]),
+    endDate: reader.readDateTime(offsets[0]),
+    location: reader.readString(offsets[1]),
+    schoolName: reader.readString(offsets[2]),
+    startDate: reader.readDateTime(offsets[3]),
+    year: reader.readString(offsets[4]),
+    yearColorId: reader.readLong(offsets[5]),
   );
   object.id = id;
   return object;
@@ -99,10 +122,16 @@ P _yearDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readDateTime(offset)) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -198,6 +227,59 @@ extension YearQueryWhere on QueryBuilder<Year, Year, QWhereClause> {
 }
 
 extension YearQueryFilter on QueryBuilder<Year, Year, QFilterCondition> {
+  QueryBuilder<Year, Year, QAfterFilterCondition> endDateEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'endDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> endDateGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'endDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> endDateLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'endDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> endDateBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'endDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Year, Year, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -242,6 +324,318 @@ extension YearQueryFilter on QueryBuilder<Year, Year, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'location',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'location',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'location',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'location',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> locationIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'location',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'schoolName',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'schoolName',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'schoolName',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'schoolName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> schoolNameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'schoolName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> startDateEqualTo(
+      DateTime value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> startDateGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> startDateLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'startDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterFilterCondition> startDateBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'startDate',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -430,59 +824,6 @@ extension YearQueryFilter on QueryBuilder<Year, Year, QFilterCondition> {
       ));
     });
   }
-
-  QueryBuilder<Year, Year, QAfterFilterCondition> yearColorIntEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'yearColorInt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Year, Year, QAfterFilterCondition> yearColorIntGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'yearColorInt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Year, Year, QAfterFilterCondition> yearColorIntLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'yearColorInt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Year, Year, QAfterFilterCondition> yearColorIntBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'yearColorInt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
 }
 
 extension YearQueryObject on QueryBuilder<Year, Year, QFilterCondition> {}
@@ -546,6 +887,54 @@ extension YearQueryLinks on QueryBuilder<Year, Year, QFilterCondition> {
 }
 
 extension YearQuerySortBy on QueryBuilder<Year, Year, QSortBy> {
+  QueryBuilder<Year, Year, QAfterSortBy> sortByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'endDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortByEndDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'endDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortByLocation() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'location', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortByLocationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'location', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortBySchoolName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'schoolName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortBySchoolNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'schoolName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> sortByStartDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<Year, Year, QAfterSortBy> sortByYear() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'year', Sort.asc);
@@ -569,21 +958,21 @@ extension YearQuerySortBy on QueryBuilder<Year, Year, QSortBy> {
       return query.addSortBy(r'yearColorId', Sort.desc);
     });
   }
-
-  QueryBuilder<Year, Year, QAfterSortBy> sortByYearColorInt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yearColorInt', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Year, Year, QAfterSortBy> sortByYearColorIntDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yearColorInt', Sort.desc);
-    });
-  }
 }
 
 extension YearQuerySortThenBy on QueryBuilder<Year, Year, QSortThenBy> {
+  QueryBuilder<Year, Year, QAfterSortBy> thenByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'endDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenByEndDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'endDate', Sort.desc);
+    });
+  }
+
   QueryBuilder<Year, Year, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -593,6 +982,42 @@ extension YearQuerySortThenBy on QueryBuilder<Year, Year, QSortThenBy> {
   QueryBuilder<Year, Year, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenByLocation() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'location', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenByLocationDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'location', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenBySchoolName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'schoolName', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenBySchoolNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'schoolName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Year, Year, QAfterSortBy> thenByStartDateDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'startDate', Sort.desc);
     });
   }
 
@@ -619,21 +1044,35 @@ extension YearQuerySortThenBy on QueryBuilder<Year, Year, QSortThenBy> {
       return query.addSortBy(r'yearColorId', Sort.desc);
     });
   }
-
-  QueryBuilder<Year, Year, QAfterSortBy> thenByYearColorInt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yearColorInt', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Year, Year, QAfterSortBy> thenByYearColorIntDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yearColorInt', Sort.desc);
-    });
-  }
 }
 
 extension YearQueryWhereDistinct on QueryBuilder<Year, Year, QDistinct> {
+  QueryBuilder<Year, Year, QDistinct> distinctByEndDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'endDate');
+    });
+  }
+
+  QueryBuilder<Year, Year, QDistinct> distinctByLocation(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'location', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Year, Year, QDistinct> distinctBySchoolName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'schoolName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Year, Year, QDistinct> distinctByStartDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'startDate');
+    });
+  }
+
   QueryBuilder<Year, Year, QDistinct> distinctByYear(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -646,18 +1085,36 @@ extension YearQueryWhereDistinct on QueryBuilder<Year, Year, QDistinct> {
       return query.addDistinctBy(r'yearColorId');
     });
   }
-
-  QueryBuilder<Year, Year, QDistinct> distinctByYearColorInt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'yearColorInt');
-    });
-  }
 }
 
 extension YearQueryProperty on QueryBuilder<Year, Year, QQueryProperty> {
   QueryBuilder<Year, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Year, DateTime, QQueryOperations> endDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'endDate');
+    });
+  }
+
+  QueryBuilder<Year, String, QQueryOperations> locationProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'location');
+    });
+  }
+
+  QueryBuilder<Year, String, QQueryOperations> schoolNameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'schoolName');
+    });
+  }
+
+  QueryBuilder<Year, DateTime, QQueryOperations> startDateProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'startDate');
     });
   }
 
@@ -670,12 +1127,6 @@ extension YearQueryProperty on QueryBuilder<Year, Year, QQueryProperty> {
   QueryBuilder<Year, int, QQueryOperations> yearColorIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'yearColorId');
-    });
-  }
-
-  QueryBuilder<Year, int, QQueryOperations> yearColorIntProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'yearColorInt');
     });
   }
 }

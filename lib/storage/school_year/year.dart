@@ -10,13 +10,18 @@ part 'year.g.dart';
 class Year {
   Id id = Isar.autoIncrement; //School year Id
   late String year; //School year
-  late int yearColorInt;
-  late int yearColorId;
+  late int yearColorId; //Year theme ID
   
+  late DateTime startDate; //Year start date
+  late DateTime endDate; //Year end date
+
+  late String schoolName; //Name of the school
+  late String location; //Name of location
+
 
   @Backlink(to: 'schoolYear')
   final courses = IsarLinks<Course>();
 
-  Year({required this.year, required this.yearColorInt, required this.yearColorId});
+  Year({required this.year, required this.yearColorId, required this.startDate, required this.endDate, required this.location, required this.schoolName});
 
 }

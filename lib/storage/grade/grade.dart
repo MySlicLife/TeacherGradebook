@@ -15,6 +15,7 @@ class Grade {
 
   late double? pointsEarned; //Points earned by student
   late double? pointsPossible; //Total Points
+  final int? weight; //Grade's weight
 
   final assignment = IsarLink<Assignment>(); //Link to assignment
   final student = IsarLink<Student>(); //Link to student
@@ -23,7 +24,7 @@ class Grade {
   bool? isMissing; //Mark assignment as missing
   bool? isComplete; //Mark assignment as complete
 
-  Grade({this.pointsEarned, required this.pointsPossible, this.isLate, this.isMissing, this.isComplete});
+  Grade({this.pointsEarned, required this.pointsPossible, this.isLate, this.isMissing, this.isComplete, this.weight});
 
     String getFormattedPointsEarned() {
       if (pointsEarned == null) {

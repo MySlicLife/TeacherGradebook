@@ -31,8 +31,8 @@ class CourseCubit extends Cubit<CourseState> {
     }
   }
 
-  Future<void> addCourse(String courseName, String coursePeriod, Id schoolYearId) async {
-    await _teacherRepo.createCourse(courseName: courseName, coursePeriod: coursePeriod, yearId: schoolYearId);
+  Future<void> addCourse(String courseName, String coursePeriod, Id schoolYearId, List<double> thresholds) async {
+    await _teacherRepo.createCourse(courseName: courseName, coursePeriod: coursePeriod, yearId: schoolYearId, thresholds: thresholds);
     loadCourses(schoolYearId);
   }
 
@@ -41,8 +41,8 @@ class CourseCubit extends Cubit<CourseState> {
     loadCourses(schoolYearId);
   }
 
-  Future<void> editCourse(Id courseId, Id schoolYearId, String? courseName, String? coursePeriod) async {
-    await _teacherRepo.editCourse(id: courseId, yearId: schoolYearId, courseName: courseName, coursePeriod: coursePeriod);
+  Future<void> editCourse(Id courseId, Id schoolYearId, String? courseName, String? coursePeriod, List<double> thresholds) async {
+    await _teacherRepo.editCourse(id: courseId, yearId: schoolYearId, courseName: courseName, coursePeriod: coursePeriod, thresholds: thresholds);
     loadCourses(schoolYearId);
   }
 }

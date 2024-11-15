@@ -41,6 +41,11 @@ const GradeSchema = CollectionSchema(
       id: 4,
       name: r'pointsPossible',
       type: IsarType.double,
+    ),
+    r'weight': PropertySchema(
+      id: 5,
+      name: r'weight',
+      type: IsarType.long,
     )
   },
   estimateSize: _gradeEstimateSize,
@@ -90,6 +95,7 @@ void _gradeSerialize(
   writer.writeBool(offsets[2], object.isMissing);
   writer.writeDouble(offsets[3], object.pointsEarned);
   writer.writeDouble(offsets[4], object.pointsPossible);
+  writer.writeLong(offsets[5], object.weight);
 }
 
 Grade _gradeDeserialize(
@@ -104,6 +110,7 @@ Grade _gradeDeserialize(
     isMissing: reader.readBoolOrNull(offsets[2]),
     pointsEarned: reader.readDoubleOrNull(offsets[3]),
     pointsPossible: reader.readDoubleOrNull(offsets[4]),
+    weight: reader.readLongOrNull(offsets[5]),
   );
   object.id = id;
   return object;
@@ -126,6 +133,8 @@ P _gradeDeserializeProp<P>(
       return (reader.readDoubleOrNull(offset)) as P;
     case 4:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 5:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -506,6 +515,74 @@ extension GradeQueryFilter on QueryBuilder<Grade, Grade, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'weight',
+      ));
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'weight',
+      ));
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'weight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'weight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'weight',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> weightBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'weight',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension GradeQueryObject on QueryBuilder<Grade, Grade, QFilterCondition> {}
@@ -598,6 +675,18 @@ extension GradeQuerySortBy on QueryBuilder<Grade, Grade, QSortBy> {
       return query.addSortBy(r'pointsPossible', Sort.desc);
     });
   }
+
+  QueryBuilder<Grade, Grade, QAfterSortBy> sortByWeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'weight', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterSortBy> sortByWeightDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'weight', Sort.desc);
+    });
+  }
 }
 
 extension GradeQuerySortThenBy on QueryBuilder<Grade, Grade, QSortThenBy> {
@@ -672,6 +761,18 @@ extension GradeQuerySortThenBy on QueryBuilder<Grade, Grade, QSortThenBy> {
       return query.addSortBy(r'pointsPossible', Sort.desc);
     });
   }
+
+  QueryBuilder<Grade, Grade, QAfterSortBy> thenByWeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'weight', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterSortBy> thenByWeightDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'weight', Sort.desc);
+    });
+  }
 }
 
 extension GradeQueryWhereDistinct on QueryBuilder<Grade, Grade, QDistinct> {
@@ -702,6 +803,12 @@ extension GradeQueryWhereDistinct on QueryBuilder<Grade, Grade, QDistinct> {
   QueryBuilder<Grade, Grade, QDistinct> distinctByPointsPossible() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pointsPossible');
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QDistinct> distinctByWeight() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'weight');
     });
   }
 }
@@ -740,6 +847,12 @@ extension GradeQueryProperty on QueryBuilder<Grade, Grade, QQueryProperty> {
   QueryBuilder<Grade, double?, QQueryOperations> pointsPossibleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pointsPossible');
+    });
+  }
+
+  QueryBuilder<Grade, int?, QQueryOperations> weightProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'weight');
     });
   }
 }

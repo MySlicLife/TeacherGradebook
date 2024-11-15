@@ -44,13 +44,16 @@ class TeacherRepo {
 
   //Create Year
   Future<Year> createYear(
-      {required String name, int? yearColor, int? yearColorId}) async {
+      {required String name, int? yearColorId, required DateTime startDate, required DateTime endDate, required String schoolName, required String location}) async {
     try {
       final Isar dbInstance = await _teacherDB;
       final Year newYear = Year(
           year: name,
-          yearColorInt: yearColor ?? 0xFF757575,
-          yearColorId: yearColorId ?? 0);
+          yearColorId: yearColorId ?? 0,
+          startDate: startDate,
+          endDate: endDate,
+          schoolName: schoolName,
+          location: location);
       await dbInstance.writeTxn(() async {
         await dbInstance.years.put(newYear);
       });
@@ -65,15 +68,22 @@ class TeacherRepo {
   Future<Year> editYear(
       {required Id id,
       String? name,
-      int? yearColorInt,
-      int? yearColorId}) async {
+      int? yearColorId,
+      DateTime? startDate,
+      DateTime? endDate,
+      String? schoolName,
+      String? location,
+      }) async {
     final Isar dbInstance = await _teacherDB;
     final Year? existingYear = await dbInstance.years.get(id);
 
     if (existingYear != null) {
       existingYear.year = name ?? existingYear.year;
-      existingYear.yearColorInt = yearColorInt ?? existingYear.yearColorInt;
       existingYear.yearColorId = yearColorId ?? existingYear.yearColorId;
+      existingYear.startDate = startDate ?? existingYear.startDate;
+      existingYear.endDate = endDate ?? existingYear.endDate;
+      existingYear.schoolName = schoolName ?? existingYear.schoolName;
+      existingYear.location = location ?? existingYear.location;
       await dbInstance.writeTxn(() async {
         await dbInstance.years.put(existingYear);
       });
@@ -150,12 +160,13 @@ Future<void> deleteYear({required Id id}) async {
   Future<Course> createCourse(
       {required String courseName,
       required String coursePeriod,
-      required Id yearId}) async {
+      required Id yearId,
+      required List<double> thresholds}) async {
     try {
       final Isar dbInstance = await _teacherDB;
       final Year? schoolYear = await dbInstance.years.get(yearId);
       final Course newCourse =
-          Course(courseName: courseName, coursePeriod: coursePeriod)
+          Course(courseName: courseName, coursePeriod: coursePeriod, thresholds: thresholds)
             ..schoolYear.value = schoolYear;
 
       dbInstance.writeTxnSync(() {
@@ -173,6 +184,7 @@ Future<void> deleteYear({required Id id}) async {
       {required Id id,
       String? courseName,
       String? coursePeriod,
+      List<double>? thresholds,
       required Id yearId}) async {
     final Isar dbInstance = await _teacherDB;
     final Year? schoolYear = await dbInstance.years.get(yearId);
@@ -181,6 +193,7 @@ Future<void> deleteYear({required Id id}) async {
     if (existingCourse != null) {
       existingCourse.courseName = courseName ?? existingCourse.courseName;
       existingCourse.coursePeriod = coursePeriod ?? existingCourse.coursePeriod;
+      existingCourse.thresholds = thresholds ?? existingCourse.thresholds;
       existingCourse.schoolYear.value = schoolYear;
 
       dbInstance.writeTxnSync(() {
@@ -443,16 +456,36 @@ Future<void> deleteStudent({required Id studentId}) async {
     }
   }
 
-  //Load all grades by student
-  Future<List<Grade>> getGradesByStudent(Id isarStudentId) async {
-    final Isar dbInstance = await _teacherDB;
-    final currentStudent = await dbInstance.students.get(isarStudentId);
-    if (currentStudent == null) {
-      throw Exception("Cannot fetch student with ID $isarStudentId");
-    } else {
-      return currentStudent.grades.toList();
+// Load all grades by student
+Future<List<Grade>> getGradesByStudent(Id isarStudentId) async {
+  final Isar dbInstance = await _teacherDB;
+  final currentStudent = await dbInstance.students.get(isarStudentId);
+  
+  if (currentStudent == null) {
+    throw Exception("Cannot fetch student with ID $isarStudentId");
+  } else {
+    // Calculate the new grade
+    double newCalculatedGrade = currentStudent.calculateGrades(currentStudent.grades.toList());
+
+    // Only update if the new calculated grade is different from the existing one
+    if (newCalculatedGrade != currentStudent.studentNumberGrade) {
+      currentStudent.studentNumberGrade = newCalculatedGrade; // Update the studentNumberGrade
+
+        for (var course in currentStudent.courses.toList()) {
+          currentStudent.studentLetterGrade = course.getLetterGrade(newCalculatedGrade);
+        }
+
+
+      // Save the updated student object back to the database
+      await dbInstance.writeTxn(() async {
+        await dbInstance.students.put(currentStudent); // Update the student record
+      });
     }
+
+    return currentStudent.grades.toList();
   }
+}
+
 
   //Load singular grade
   Future<Grade> getGrade(Id gradeId) async {
@@ -488,7 +521,6 @@ Future<void> deleteStudent({required Id studentId}) async {
       dbInstance.writeTxnSync(() {
         dbInstance.grades.putSync(newGrade);
       });
-
       return newGrade;
     } else {
       throw Exception("Cannot find assignment or grade");

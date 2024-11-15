@@ -27,10 +27,20 @@ const StudentSchema = CollectionSchema(
       name: r'studentId',
       type: IsarType.long,
     ),
-    r'studentName': PropertySchema(
+    r'studentLetterGrade': PropertySchema(
       id: 2,
+      name: r'studentLetterGrade',
+      type: IsarType.string,
+    ),
+    r'studentName': PropertySchema(
+      id: 3,
       name: r'studentName',
       type: IsarType.string,
+    ),
+    r'studentNumberGrade': PropertySchema(
+      id: 4,
+      name: r'studentNumberGrade',
+      type: IsarType.double,
     )
   },
   estimateSize: _studentEstimateSize,
@@ -67,6 +77,12 @@ int _studentEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.studentLetterGrade;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.studentName.length * 3;
   return bytesCount;
 }
@@ -79,7 +95,9 @@ void _studentSerialize(
 ) {
   writer.writeLong(offsets[0], object.programId);
   writer.writeLong(offsets[1], object.studentId);
-  writer.writeString(offsets[2], object.studentName);
+  writer.writeString(offsets[2], object.studentLetterGrade);
+  writer.writeString(offsets[3], object.studentName);
+  writer.writeDouble(offsets[4], object.studentNumberGrade);
 }
 
 Student _studentDeserialize(
@@ -91,7 +109,9 @@ Student _studentDeserialize(
   final object = Student(
     programId: reader.readLongOrNull(offsets[0]),
     studentId: reader.readLongOrNull(offsets[1]),
-    studentName: reader.readString(offsets[2]),
+    studentLetterGrade: reader.readStringOrNull(offsets[2]),
+    studentName: reader.readString(offsets[3]),
+    studentNumberGrade: reader.readDoubleOrNull(offsets[4]),
   );
   object.id = id;
   return object;
@@ -109,7 +129,11 @@ P _studentDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
       return (reader.readString(offset)) as P;
+    case 4:
+      return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -396,6 +420,160 @@ extension StudentQueryFilter
     });
   }
 
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'studentLetterGrade',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'studentLetterGrade',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'studentLetterGrade',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'studentLetterGrade',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'studentLetterGrade',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentLetterGrade',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentLetterGradeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'studentLetterGrade',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Student, Student, QAfterFilterCondition> studentNameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -523,6 +701,90 @@ extension StudentQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'studentName',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'studentNumberGrade',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'studentNumberGrade',
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentNumberGrade',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'studentNumberGrade',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'studentNumberGrade',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterFilterCondition>
+      studentNumberGradeBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'studentNumberGrade',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -672,6 +934,18 @@ extension StudentQuerySortBy on QueryBuilder<Student, Student, QSortBy> {
     });
   }
 
+  QueryBuilder<Student, Student, QAfterSortBy> sortByStudentLetterGrade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentLetterGrade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> sortByStudentLetterGradeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentLetterGrade', Sort.desc);
+    });
+  }
+
   QueryBuilder<Student, Student, QAfterSortBy> sortByStudentName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'studentName', Sort.asc);
@@ -681,6 +955,18 @@ extension StudentQuerySortBy on QueryBuilder<Student, Student, QSortBy> {
   QueryBuilder<Student, Student, QAfterSortBy> sortByStudentNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'studentName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> sortByStudentNumberGrade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentNumberGrade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> sortByStudentNumberGradeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentNumberGrade', Sort.desc);
     });
   }
 }
@@ -723,6 +1009,18 @@ extension StudentQuerySortThenBy
     });
   }
 
+  QueryBuilder<Student, Student, QAfterSortBy> thenByStudentLetterGrade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentLetterGrade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> thenByStudentLetterGradeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentLetterGrade', Sort.desc);
+    });
+  }
+
   QueryBuilder<Student, Student, QAfterSortBy> thenByStudentName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'studentName', Sort.asc);
@@ -732,6 +1030,18 @@ extension StudentQuerySortThenBy
   QueryBuilder<Student, Student, QAfterSortBy> thenByStudentNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'studentName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> thenByStudentNumberGrade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentNumberGrade', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Student, Student, QAfterSortBy> thenByStudentNumberGradeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentNumberGrade', Sort.desc);
     });
   }
 }
@@ -750,10 +1060,24 @@ extension StudentQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Student, Student, QDistinct> distinctByStudentLetterGrade(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'studentLetterGrade',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Student, Student, QDistinct> distinctByStudentName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'studentName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Student, Student, QDistinct> distinctByStudentNumberGrade() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'studentNumberGrade');
     });
   }
 }
@@ -778,9 +1102,23 @@ extension StudentQueryProperty
     });
   }
 
+  QueryBuilder<Student, String?, QQueryOperations>
+      studentLetterGradeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'studentLetterGrade');
+    });
+  }
+
   QueryBuilder<Student, String, QQueryOperations> studentNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'studentName');
+    });
+  }
+
+  QueryBuilder<Student, double?, QQueryOperations>
+      studentNumberGradeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'studentNumberGrade');
     });
   }
 }

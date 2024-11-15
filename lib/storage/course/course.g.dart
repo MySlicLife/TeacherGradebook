@@ -31,6 +31,11 @@ const CourseSchema = CollectionSchema(
       id: 2,
       name: r'hashCode',
       type: IsarType.long,
+    ),
+    r'thresholds': PropertySchema(
+      id: 3,
+      name: r'thresholds',
+      type: IsarType.doubleList,
     )
   },
   estimateSize: _courseEstimateSize,
@@ -76,6 +81,7 @@ int _courseEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.courseName.length * 3;
   bytesCount += 3 + object.coursePeriod.length * 3;
+  bytesCount += 3 + object.thresholds.length * 8;
   return bytesCount;
 }
 
@@ -88,6 +94,7 @@ void _courseSerialize(
   writer.writeString(offsets[0], object.courseName);
   writer.writeString(offsets[1], object.coursePeriod);
   writer.writeLong(offsets[2], object.hashCode);
+  writer.writeDoubleList(offsets[3], object.thresholds);
 }
 
 Course _courseDeserialize(
@@ -99,6 +106,7 @@ Course _courseDeserialize(
   final object = Course(
     courseName: reader.readString(offsets[0]),
     coursePeriod: reader.readString(offsets[1]),
+    thresholds: reader.readDoubleList(offsets[3]) ?? [],
   );
   object.courseId = id;
   return object;
@@ -117,6 +125,8 @@ P _courseDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 2:
       return (reader.readLong(offset)) as P;
+    case 3:
+      return (reader.readDoubleList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -581,6 +591,154 @@ extension CourseQueryFilter on QueryBuilder<Course, Course, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsElementEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'thresholds',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition>
+      thresholdsElementGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'thresholds',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsElementLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'thresholds',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsElementBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'thresholds',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition>
+      thresholdsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> thresholdsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'thresholds',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
 }
 
 extension CourseQueryObject on QueryBuilder<Course, Course, QFilterCondition> {}
@@ -821,6 +979,12 @@ extension CourseQueryWhereDistinct on QueryBuilder<Course, Course, QDistinct> {
       return query.addDistinctBy(r'hashCode');
     });
   }
+
+  QueryBuilder<Course, Course, QDistinct> distinctByThresholds() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'thresholds');
+    });
+  }
 }
 
 extension CourseQueryProperty on QueryBuilder<Course, Course, QQueryProperty> {
@@ -845,6 +1009,12 @@ extension CourseQueryProperty on QueryBuilder<Course, Course, QQueryProperty> {
   QueryBuilder<Course, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hashCode');
+    });
+  }
+
+  QueryBuilder<Course, List<double>, QQueryOperations> thresholdsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'thresholds');
     });
   }
 }

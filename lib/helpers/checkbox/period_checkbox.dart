@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class ClassPeriodSelector extends StatefulWidget {
   final Function(String) onClassPeriodSelected;
+  final String? currentPeriod;
 
-  const ClassPeriodSelector({super.key, required this.onClassPeriodSelected});
+  const ClassPeriodSelector({
+    super.key,
+    required this.onClassPeriodSelected,
+    this.currentPeriod,
+  });
 
   @override
   ClassPeriodSelectorState createState() => ClassPeriodSelectorState();
@@ -13,6 +18,26 @@ class ClassPeriodSelectorState extends State<ClassPeriodSelector> {
   final TextEditingController _controller = TextEditingController();
   bool _isASelected = false;
   bool _isBSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controller and selection if currentPeriod is provided
+    if (widget.currentPeriod != null) {
+      final RegExp regex = RegExp(r'\d+');
+      final match = regex.firstMatch(widget.currentPeriod!)?.group(0) ?? '';
+      
+      // Set the controller text to the numeric part
+      _controller.text = match;
+
+      // Determine which course is selected (A or B)
+      if (widget.currentPeriod!.contains("A")) {
+        _isASelected = true;
+      } else if (widget.currentPeriod!.contains("B")) {
+        _isBSelected = true;
+      }
+    }
+  }
 
   String get selectedClass {
     String period = _controller.text;
@@ -51,7 +76,7 @@ class ClassPeriodSelectorState extends State<ClassPeriodSelector> {
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                // Call onChanged to update the class period whenever the text changes
+                // Update the class period whenever the text changes
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.onClassPeriodSelected(selectedClass);
                 });
@@ -103,5 +128,11 @@ class ClassPeriodSelectorState extends State<ClassPeriodSelector> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

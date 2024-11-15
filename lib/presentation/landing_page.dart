@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teacher_gradebook/helpers/update_checker/update_checker.dart';
+import 'package:teacher_gradebook/presentation/new_welcome_page.dart';
 import 'package:teacher_gradebook/storage/teacher_repo.dart';
 
 import '../storage/school_year/year_cubit.dart';
 import 'theme/theme_cubit.dart';
-import 'welcome_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -48,8 +48,9 @@ class _LandingPageState extends State<LandingPage> {
                 ],
                 child: MaterialApp(
                     debugShowCheckedModeBanner: false,
-                    home: WelcomePage(
+                    home: YearLandingPage(
                       teacherName: "Ms. Osburn",
+                      mainAppThemeId: 7,
                     )))));
   }
 

@@ -33,8 +33,8 @@ class YearCubit extends Cubit<YearState> {
     }
   }
 
-  Future<void> addYear(String yearName, int yearColor, int yearColorId) async {
-    await _teacherRepo.createYear(name: yearName, yearColor: yearColor, yearColorId: yearColorId);
+  Future<void> addYear(String yearName, int yearColorId, DateTime startDate, DateTime endDate, String schoolName, String location) async {
+    await _teacherRepo.createYear(name: yearName, yearColorId: yearColorId, startDate: startDate, endDate: endDate, schoolName: schoolName, location: location);
     emit(YearChanged());
     loadYears();
   }
@@ -45,8 +45,8 @@ class YearCubit extends Cubit<YearState> {
     loadYears();
   }
 
-  Future<void> editYear(Id yearId, String yearName, int yearColor, int yearColorId) async {
-    await _teacherRepo.editYear(id: yearId, name: yearName, yearColorInt: yearColor, yearColorId: yearColorId);
+  Future<void> editYear(Id yearId, String? yearName, int? yearColorId, DateTime? startDate, DateTime? endDate, String? schoolName, String? location) async {
+    await _teacherRepo.editYear(id: yearId, name: yearName, yearColorId: yearColorId, startDate: startDate, endDate: endDate, schoolName: schoolName, location: location);
     emit(YearChanged());
     loadYears();
   }
