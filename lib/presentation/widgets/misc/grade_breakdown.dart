@@ -73,7 +73,6 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        print(widget.selectedCourseList);
         // Available width minus padding for labels and margins
         final double availableWidth = constraints.maxWidth - 60;
 

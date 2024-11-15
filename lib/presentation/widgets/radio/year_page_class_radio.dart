@@ -82,8 +82,6 @@ class _YearPageClassToggleState extends State<YearPageClassToggle> {
                           if (widget.onOptionChanged != null) {
                             widget.onOptionChanged!(coursesList);
                           }
-
-                          print(coursesList.length);
                         },
                         screenTheme: widget.screenTheme,
                       ),

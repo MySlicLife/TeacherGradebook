@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -548,7 +547,8 @@ class _YearLandingPageState extends State<YearLandingPage>
                                       ),
                                     ),
                                   ),
-                            
+
+                                  //Start and End Date Boxes
                                   Flexible(
                                     flex: 1,
                                     child: Row(
@@ -609,7 +609,6 @@ class _YearLandingPageState extends State<YearLandingPage>
                                       ],
                                     ),
                                   ),
-                            
                             
                                   // Text field for school and city
                                   Flexible(
@@ -737,11 +736,14 @@ class _YearLandingPageState extends State<YearLandingPage>
                                             child: Padding(
                                               padding: const EdgeInsets.all(10),
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.start,
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                                    child: Container(
+                                                  Flexible(
+                                                    flex: 5,
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children:[
+                                                        Container(
                                                       padding: EdgeInsets.all(10),
                                                       decoration: BoxDecoration(
                                                           borderRadius: BorderRadius.circular(15),
@@ -764,36 +766,39 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         ],
                                                       ),
                                                     ),
-                                                  ),
-
-                                                  Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(15),
-                                                        color: selectedYearTheme?.colorScheme.secondary ?? welcomeThemeState.colorScheme.secondary),
-                                                    child: Row(
-                                                      children: [
-                                                        Text("Total ${selectedCourseList?[0].courseName ?? selectedYear?.year ?? "Example"} Periods: ",
-                                                          style: TextStyle(
-                                                              fontSize: 25,
-                                                              color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
-                                                        ),
-                                                        
-                                                        SizedBox(width: 10),
-                                                        Text(selectedCourseList?.length.toString() ?? selectedYear?.courses.toList().length.toString() ?? "12",
-                                                          style: TextStyle(
-                                                              fontSize: 30,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
-                                                        ),
-                                                      ],
+                                                    
+                                                    Container(
+                                                      padding: EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15),
+                                                          color: selectedYearTheme?.colorScheme.secondary ?? welcomeThemeState.colorScheme.secondary),
+                                                      child: Row(
+                                                        children: [
+                                                          Text("Total ${selectedCourseList?[0].courseName ?? selectedYear?.year ?? "Example"} Periods: ",
+                                                            style: TextStyle(
+                                                                fontSize: 25,
+                                                                color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                          ),
+                                                          
+                                                          SizedBox(width: 10),
+                                                          Text(selectedCourseList?.length.toString() ?? selectedYear?.courses.toList().length.toString() ?? "12",
+                                                            style: TextStyle(
+                                                                fontSize: 30,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),]
                                                     ),
                                                   ),
-
-                                                  GradeBreakdown(
-                                                    selectedYear: selectedYear,
-                                                    selectedCourseList: selectedCourseList,
-                                                    screenTheme: selectedYearTheme ?? welcomeThemeState,
+                                                  Flexible(
+                                                    flex: 8,
+                                                    child: GradeBreakdown(
+                                                      selectedYear: selectedYear,
+                                                      selectedCourseList: selectedCourseList,
+                                                      screenTheme: selectedYearTheme ?? welcomeThemeState,
+                                                    ),
                                                   ),
                                                 ],
                                               ),

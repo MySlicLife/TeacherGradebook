@@ -21,8 +21,11 @@ void main() async {
   await windowManager.ensureInitialized();
 
   // Make it take up whole screen
+  windowManager.setPosition(Offset.zero);
   windowManager.setSize(Size(1750, 950));
   windowManager.setMinimumSize(Size(1750, 950));
+
+  
 
 
   //debugPaintSizeEnabled = true;
