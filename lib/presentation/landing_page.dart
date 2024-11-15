@@ -50,7 +50,7 @@ class _LandingPageState extends State<LandingPage> {
                     debugShowCheckedModeBanner: false,
                     home: YearLandingPage(
                       teacherName: "Ms. Osburn",
-                      mainAppThemeId: 3,
+                      mainAppThemeId: 7,
                     )))));
   }
 

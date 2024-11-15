@@ -4,13 +4,13 @@ import '../../../storage/course/course.dart';
 import '../../../storage/school_year/year.dart';
 
 class GradeBreakdown extends StatefulWidget {
-  final Course? currentCourse;
+  final List<Course>? selectedCourseList;
   final Year? selectedYear;
   final ThemeData screenTheme;
 
   const GradeBreakdown(
       {super.key,
-      this.currentCourse,
+      this.selectedCourseList,
       this.selectedYear,
       required this.screenTheme,});
 
@@ -31,15 +31,17 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
       "N/A": 0
     };
 
-    if (widget.currentCourse != null) {
+    if (widget.selectedCourseList != null) {
       // Count grades just for the course
-      for (var student in widget.currentCourse!.students) {
+      for (var course in widget.selectedCourseList!) {
+      for (var student in course.students) {
         String letterGrade =
             student.studentLetterGrade ?? "N/A"; // Assuming this is a string
         if (gradeCountMap.containsKey(letterGrade)) {
           // Increment the count for the grade
           gradeCountMap[letterGrade] = gradeCountMap[letterGrade]! + 1;
         }
+      }
       }
     } else if (widget.selectedYear != null) {
       // Count grades for the whole year
@@ -71,6 +73,7 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        print(widget.selectedCourseList);
         // Available width minus padding for labels and margins
         final double availableWidth = constraints.maxWidth - 60;
 
@@ -78,7 +81,7 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${widget.currentCourse?.courseName ?? widget.selectedYear?.year ?? "Example"} Grades",
+              "${widget.selectedCourseList?[0].courseName ?? widget.selectedYear?.year ?? "Example"} Grades",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
