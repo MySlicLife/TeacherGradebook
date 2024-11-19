@@ -13,8 +13,7 @@ class Logger {
     try {
       // Get the executable's directory
       String executablePath = Platform.executable;
-      String logDirectory =
-          path.dirname(executablePath); // Get the directory of the executable
+      String logDirectory = path.dirname(executablePath); // Get the directory of the executable
 
       _logFile = File('$logDirectory/app_log.txt');
 

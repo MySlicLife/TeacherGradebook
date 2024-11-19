@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teacher_gradebook/helpers/update_checker/update_checker.dart';
 import 'package:teacher_gradebook/presentation/new_welcome_page.dart';
+import 'package:teacher_gradebook/storage/settings/settings_storage.dart';
 import 'package:teacher_gradebook/storage/teacher_repo.dart';
 
 import '../storage/school_year/year_cubit.dart';
@@ -21,9 +23,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-   _checkForUpdates();
-    
-
+    _checkForUpdates();
   }
 
   Future<void> _checkForUpdates() async {
@@ -40,18 +40,17 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _navigateToWelcomePage() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => MultiBlocProvider(
                 providers: [
                   BlocProvider(create: (context) => YearCubit(TeacherRepo())),
-                  BlocProvider(create: (context) => ThemeCubit())
+                  BlocProvider.value(value: context.read<ThemeCubit>()),
+                  BlocProvider.value(value: context.read<SettingsCubit>()),
                 ],
                 child: MaterialApp(
                     debugShowCheckedModeBanner: false,
-                    home: YearLandingPage(
-                      teacherName: "Ms. Osburn",
-                      mainAppThemeId: 7,
-                    )))));
+                    home: YearLandingPage()))));
   }
 
   void _launchUpdate() {
@@ -61,69 +60,88 @@ class _LandingPageState extends State<LandingPage> {
     });
   }
 
+  // Method to save app version to SharedPreferences
+  Future<void> saveAppVersionToPreferences(String version) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('appVersion', version);
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // Title Text
-          Text("Teacher Gradebook", style: TextStyle(fontSize: 100)),
+    return BlocBuilder<SettingsCubit, SettingsState>(
+      builder: (context, settingsState) {
+        print(settingsState.appThemeInt);
+        return Scaffold(
+          body: Column(
+            children: [
+              // Title Text
+              Text("Teacher Gradebook", style: TextStyle(fontSize: 100)),
 
-          Center(
-            child: _isLoading
-                ? CircularProgressIndicator() // Show loading indicator
-                : Container(
-                    color: Colors
-                        .green), // Placeholder for when loading is complete
-          ),
+              Center(
+                child: _isLoading ? CircularProgressIndicator() : Container(color: Colors.green), // Placeholder for when loading is complete
+              ),
 
-          // Update Prompt
-          if (_isUpdatePromptVisible)
-            Container(
-              padding: EdgeInsets.all(16),
-              color: Colors.yellow,
-              child: Column(
-                children: [
-                  Text(
-                      'A new version is available. Would you like to download it now?'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              // Update Prompt
+              if (_isUpdatePromptVisible)
+                Container(
+                  padding: EdgeInsets.all(16),
+                  color: Colors.yellow,
+                  child: Column(
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _isUpdatePromptVisible = false; // Hide prompt
-                          });
-                          _navigateToWelcomePage(); // Navigate to welcome page if not updating
-                        },
-                        child: Text('No'),
-                      ),
-                      SizedBox(width: 8),
-                      TextButton(
-                        onPressed: _launchUpdate,
-                        child: Text('Yes'),
+                      Text(
+                          'A new version is available. Would you like to download it now?'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _isUpdatePromptVisible = false; // Hide prompt
+                              });
+                              _navigateToWelcomePage(); // Navigate to welcome page if not updating
+                            },
+                            child: Text('No'),
+                          ),
+                          SizedBox(width: 8),
+                          TextButton(
+                            onPressed: _launchUpdate,
+                            child: Text('Yes'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
 
-          // Footer Text
-          Center(
-            child: FutureBuilder<String>(
-              future: getAppVersion(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Show loading indicator
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return Text("Written by Aleks Slicner, version ${snapshot.data}");
-                }}
-            ))
-        ],
+              // Footer Text
+              Center(
+                  child: FutureBuilder<String>(
+          future: getAppVersion(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loading indicator
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              // Use addPostFrameCallback to save data after the widget is built
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                // Save the app version to SharedPreferences after the frame is drawn
+                saveAppVersionToPreferences(snapshot.data!);
+              });
+
+              return Text(
+                "Written by Aleks Slicner, version ${snapshot.data}",
+              );
+            } else {
+              return Text("No version data available.");
+            }
+          },
+        ),
       ),
+    
+            ],
+          ),
+        );
+      },
     );
   }
 }

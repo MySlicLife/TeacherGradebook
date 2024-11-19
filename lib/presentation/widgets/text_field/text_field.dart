@@ -7,10 +7,11 @@ class NeumorphicTextField extends StatelessWidget {
   final double cursorHeight;
   final TextEditingController textController;
   final double fontSize; 
+  final FocusNode? focusNode;
   final void Function(String)? onChanged;
   
 
-  const NeumorphicTextField({super.key, this.fieldTheme, required this.hintText, required this.textController, required this.screenTheme, required this.fontSize, this.onChanged, required this.cursorHeight});
+  const NeumorphicTextField({super.key, this.focusNode, this.fieldTheme, required this.hintText, required this.textController, required this.screenTheme, required this.fontSize, this.onChanged, required this.cursorHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class NeumorphicTextField extends StatelessWidget {
         ),
         child: Center(
           child: TextField(
+            focusNode: focusNode,
             onChanged: onChanged,
             cursorColor: screenTheme.colorScheme.onTertiary,
             cursorHeight: cursorHeight,
