@@ -25,16 +25,16 @@ import 'theme/colors.dart';
 import 'theme/theme_cubit.dart';
 import 'widgets/misc/grade_breakdown.dart';
 
-class YearLandingPage extends StatefulWidget {
-  const YearLandingPage({
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({
     super.key,
   });
 
   @override
-  State<YearLandingPage> createState() => _YearLandingPageState();
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _YearLandingPageState extends State<YearLandingPage>
+class _WelcomePageState extends State<WelcomePage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late Map<String, List<Year>> groupedYears = {};
@@ -122,16 +122,10 @@ class _YearLandingPageState extends State<YearLandingPage>
 
   // Get the current theme for the selected year
   ThemeData getCurrentTheme(int yearColorId, ThemeCubit themeCubit, SettingsState settingsState) {
-    print("test");
-    
     var theme = themeCubit.colorThemes.firstWhere(
       (theme) => theme.colorThemeId == yearColorId,
     );
-
-
-
     return settingsState.isDarkMode ? theme.darkMode : theme.lightMode;
-    
   }
 
   // Get the total student count for the year
@@ -293,18 +287,18 @@ class _YearLandingPageState extends State<YearLandingPage>
         themeCubit.selectTheme(settingsState.appThemeInt);
 
         return BlocBuilder<ThemeCubit, ThemeData>(
-          builder: (context, welcomeThemeState) {
+          builder: (context, appTheme) {
 
             return Scaffold(
               key: _scaffoldKey,
               endDrawer: SettingsDrawer(
-                  screenTheme: welcomeThemeState,
+                  screenTheme: appTheme,
                   themeCubit: themeCubit,
                   settingsCubit: settingsCubit,
                   nameController: nameController,
                   onTap: () => _openColorPicker(null, settingsCubit),),
                   
-              backgroundColor: welcomeThemeState.colorScheme.surface,
+              backgroundColor: appTheme.colorScheme.surface,
               body: Padding(
                 padding: EdgeInsets.all(elementPadding),
                 child: Row(
@@ -331,7 +325,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                       "Welcome back ${settingsState.teacherName}!",
                                       style: TextStyle(
                                         fontSize: 45,
-                                        color: welcomeThemeState
+                                        color: appTheme
                                             .colorScheme.onSurface,
                                       ),
                                     ),
@@ -339,7 +333,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                       "Please select a year below..",
                                       style: TextStyle(
                                         fontSize: 30,
-                                        color: welcomeThemeState
+                                        color: appTheme
                                             .colorScheme.onSurface,
                                       ),
                                     ),
@@ -362,10 +356,10 @@ class _YearLandingPageState extends State<YearLandingPage>
                                     if (decades.isNotEmpty) {
                                       _initializeTabController(
                                           yearState.schoolYears);
-
+            
                                       return Container(
                                         decoration: BoxDecoration(
-                                            color: welcomeThemeState
+                                            color: appTheme
                                                 .colorScheme.surface,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(15))),
@@ -379,7 +373,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         Radius.circular(15),
                                                     topRight:
                                                         Radius.circular(15)),
-                                                color: welcomeThemeState
+                                                color: appTheme
                                                     .colorScheme.primary,
                                               ),
                                               child: TabBar(
@@ -393,18 +387,18 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                           topRight:
                                                               Radius.circular(
                                                                   7)),
-                                                  color: welcomeThemeState
+                                                  color: appTheme
                                                       .colorScheme.tertiary,
                                                 ),
                                                 indicatorPadding:
                                                     EdgeInsets.all(2),
-                                                dividerColor: welcomeThemeState
+                                                dividerColor: appTheme
                                                     .colorScheme.tertiary,
                                                 dividerHeight: 5,
                                                 indicatorColor:
-                                                    welcomeThemeState
+                                                    appTheme
                                                         .colorScheme.surface,
-                                                labelColor: welcomeThemeState
+                                                labelColor: appTheme
                                                     .colorScheme.onTertiary,
                                                 controller: _tabController,
                                                 tabs: decades
@@ -430,7 +424,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                           bottomRight:
                                                               Radius.circular(
                                                                   15)),
-                                                  color: welcomeThemeState
+                                                  color: appTheme
                                                       .colorScheme.primary,
                                                 ),
                                                 child: TabBarView(
@@ -521,7 +515,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                     buttonTextSize:
                                                                         40,
                                                                     screenTheme:
-                                                                        welcomeThemeState,
+                                                                        appTheme,
                                                                   ),
                                                                 ),
                                                               );
@@ -553,7 +547,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                         ),
                       ),
                     ),
-
+            
                     // Right half - Add year button, settings button, and year preview
                     Expanded(
                       flex: 2,
@@ -599,11 +593,11 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   });
                                                 },
                                                 buttonText: "Add year...",
-                                                screenTheme: welcomeThemeState,
+                                                screenTheme: appTheme,
                                               ),
                                             ),
                                           ),
-
+            
                                           // Settings button (perfect square)
                                           Flexible(
                                             flex: 2,
@@ -614,13 +608,13 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                 onPressed: () {
                                                   _scaffoldKey.currentState!
                                                       .openEndDrawer();
-
+            
                                                   setState(() {
                                                     selectedYearTheme = getCurrentTheme(selectedYear != null ? selectedYear!.yearColorId : addYearColor ?? settingsState.appThemeInt, themeCubit, settingsState);
                                                   });
                                                 },
                                                 buttonIcon: Icons.settings,
-                                                currentTheme: welcomeThemeState,
+                                                currentTheme: appTheme,
                                               ),
                                             ),
                                           ),
@@ -643,7 +637,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                   padding: EdgeInsets.all(15),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: selectedYearTheme?.colorScheme.primary ?? welcomeThemeState.colorScheme.primary,
+                                    color: selectedYearTheme?.colorScheme.primary ?? appTheme.colorScheme.primary,
                                   ),
                                   child: Column(
                                     mainAxisAlignment:
@@ -669,13 +663,13 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                 : "Year",
                                             textController: yearTextController,
                                             screenTheme: selectedYearTheme ??
-                                                welcomeThemeState,
+                                                appTheme,
                                             fontSize: 65,
                                             cursorHeight: 60,
                                           ),
                                         ),
                                       ),
-
+            
                                       //Start and End Date Boxes
                                       Flexible(
                                         flex: 1,
@@ -700,7 +694,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                       color: selectedYearTheme
                                                               ?.colorScheme
                                                               .tertiary ??
-                                                          welcomeThemeState
+                                                          appTheme
                                                               .colorScheme
                                                               .tertiary,
                                                       borderRadius:
@@ -712,15 +706,12 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         selectedStartDate ==
                                                                 null
                                                             ? "Select Start Date"
-                                                            : DateFormat(
-                                                                    'MMMM dd, yyyy')
-                                                                .format(
-                                                                    selectedStartDate!),
+                                                            : DateFormat('MMMM dd, yyyy').format(selectedStartDate!),
                                                         style: TextStyle(
                                                           color: selectedYearTheme
                                                                   ?.colorScheme
                                                                   .onTertiary ??
-                                                              welcomeThemeState
+                                                              appTheme
                                                                   .colorScheme
                                                                   .onTertiary,
                                                           fontSize: 22,
@@ -731,7 +722,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                 ),
                                               ),
                                             ),
-
+            
                                             // End Date Container
                                             Flexible(
                                               flex: 5,
@@ -747,7 +738,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                       color: selectedYearTheme
                                                               ?.colorScheme
                                                               .tertiary ??
-                                                          welcomeThemeState
+                                                          appTheme
                                                               .colorScheme
                                                               .tertiary,
                                                       borderRadius:
@@ -766,7 +757,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                           color: selectedYearTheme
                                                                   ?.colorScheme
                                                                   .onTertiary ??
-                                                              welcomeThemeState
+                                                              appTheme
                                                                   .colorScheme
                                                                   .onTertiary,
                                                           fontSize: 22,
@@ -780,7 +771,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           ],
                                         ),
                                       ),
-
+            
                                       // Text field for school and city
                                       Flexible(
                                         flex: 2,
@@ -800,7 +791,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     schoolNameController,
                                                 screenTheme:
                                                     selectedYearTheme ??
-                                                        welcomeThemeState,
+                                                        appTheme,
                                                 fontSize: 25,
                                                 onChanged: (text) {
                                                   setState(() {
@@ -820,7 +811,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                       locationController,
                                                   screenTheme:
                                                       selectedYearTheme ??
-                                                          welcomeThemeState,
+                                                          appTheme,
                                                   fontSize: 25,
                                                   onChanged: (text) {
                                                     setState(() {
@@ -831,7 +822,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           ],
                                         ),
                                       ),
-
+            
                                       // Class toggle and add button
                                       Flexible(
                                         flex: 1,
@@ -864,7 +855,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                   },
                                                   screenTheme:
                                                       selectedYearTheme ??
-                                                          welcomeThemeState,
+                                                          appTheme,
                                                   onOptionChanged:
                                                       (listOfCourses) {
                                                     setState(() {
@@ -908,7 +899,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     },
                                                     screenTheme:
                                                         selectedYearTheme ??
-                                                            welcomeThemeState,
+                                                            appTheme,
                                                     onOptionChanged:
                                                         (listOfCourses) {
                                                       if (addYear == true) {
@@ -930,7 +921,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           ),
                                         ),
                                       ),
-
+            
                                       // Statistics preview
                                       Expanded(
                                         flex: 8,
@@ -968,7 +959,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                     color: selectedYearTheme
                                                                             ?.colorScheme
                                                                             .secondary ??
-                                                                        welcomeThemeState
+                                                                        appTheme
                                                                             .colorScheme
                                                                             .secondary),
                                                                 child: Row(
@@ -979,7 +970,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                           fontSize:
                                                                               25,
                                                                           color:
-                                                                              selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                                              selectedYearTheme?.colorScheme.onSecondary ?? appTheme.colorScheme.onSecondary),
                                                                     ),
                                                                     SizedBox(
                                                                         width:
@@ -996,7 +987,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                           fontWeight: FontWeight
                                                                               .bold,
                                                                           color:
-                                                                              selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                                              selectedYearTheme?.colorScheme.onSecondary ?? appTheme.colorScheme.onSecondary),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -1013,7 +1004,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                     color: selectedYearTheme
                                                                             ?.colorScheme
                                                                             .secondary ??
-                                                                        welcomeThemeState
+                                                                        appTheme
                                                                             .colorScheme
                                                                             .secondary),
                                                                 child: Row(
@@ -1024,7 +1015,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                           fontSize:
                                                                               25,
                                                                           color:
-                                                                              selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                                              selectedYearTheme?.colorScheme.onSecondary ?? appTheme.colorScheme.onSecondary),
                                                                     ),
                                                                     SizedBox(
                                                                         width:
@@ -1036,7 +1027,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                           fontWeight: FontWeight
                                                                               .bold,
                                                                           color:
-                                                                              selectedYearTheme?.colorScheme.onSecondary ?? welcomeThemeState.colorScheme.onSecondary),
+                                                                              selectedYearTheme?.colorScheme.onSecondary ?? appTheme.colorScheme.onSecondary),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -1052,60 +1043,48 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                               selectedCourseList,
                                                           screenTheme:
                                                               selectedYearTheme ??
-                                                                  welcomeThemeState,
+                                                                  appTheme,
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                               ),
-
+            
                                               VerticalDivider(
                                                 thickness: 2,
                                                 color: selectedYearTheme
                                                         ?.colorScheme
                                                         .onPrimary ??
-                                                    welcomeThemeState
+                                                    appTheme
                                                         .colorScheme.onPrimary,
                                                 width: 20,
                                               ),
-
+            
                                               // Right column: grade statistics
                                               Expanded(
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 5),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 5),
                                                   child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       Container(
-                                                        padding:
-                                                            EdgeInsets.all(15),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
+                                                        padding: EdgeInsets.all(15),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(15),
                                                           color: selectedYearTheme
                                                                   ?.colorScheme
                                                                   .secondary ??
-                                                              welcomeThemeState
+                                                              appTheme
                                                                   .colorScheme
                                                                   .secondary,
                                                         ),
                                                         child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(5),
-                                                              decoration:
-                                                                  BoxDecoration(
+                                                              padding: EdgeInsets.all(5),
+                                                              decoration: BoxDecoration(
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
@@ -1113,7 +1092,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                 color: selectedYearTheme
                                                                         ?.colorScheme
                                                                         .primary ??
-                                                                    welcomeThemeState
+                                                                    appTheme
                                                                         .colorScheme
                                                                         .primary,
                                                               ),
@@ -1126,7 +1105,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                     maxLines: 1,
                                                                     style: TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState
+                                                                            appTheme
                                                                                 .colorScheme.onPrimary,
                                                                         fontSize:
                                                                             40,
@@ -1142,7 +1121,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                       style:
                                                                           TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState.colorScheme.onPrimary,
+                                                                            appTheme.colorScheme.onPrimary,
                                                                         fontSize:
                                                                             30,
                                                                       ),
@@ -1157,7 +1136,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                       style:
                                                                           TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState.colorScheme.onPrimary,
+                                                                            appTheme.colorScheme.onPrimary,
                                                                         fontSize:
                                                                             20,
                                                                       ),
@@ -1181,7 +1160,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                 color: selectedYearTheme
                                                                         ?.colorScheme
                                                                         .primary ??
-                                                                    welcomeThemeState
+                                                                    appTheme
                                                                         .colorScheme
                                                                         .primary,
                                                               ),
@@ -1194,7 +1173,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                     maxLines: 1,
                                                                     style: TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState
+                                                                            appTheme
                                                                                 .colorScheme.onPrimary,
                                                                         fontSize:
                                                                             40,
@@ -1209,7 +1188,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                         selectedCourseList != null ? addYear ? '1A | 100' : "${selectedItemStatistics['min']['period']} | ${selectedItemStatistics['min']['grade']}" : addYear ? '1A | 100' : "${selectedItemStatistics['min']['course']} | ${selectedItemStatistics['min']['period']} | ${selectedItemStatistics['min']['grade']}",                                                                      style:
                                                                           TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState.colorScheme.onPrimary,
+                                                                            appTheme.colorScheme.onPrimary,
                                                                         fontSize:
                                                                             30,
                                                                       ),
@@ -1224,7 +1203,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                       style:
                                                                           TextStyle(
                                                                         color: selectedYearTheme?.colorScheme.onPrimary ??
-                                                                            welcomeThemeState.colorScheme.onPrimary,
+                                                                            appTheme.colorScheme.onPrimary,
                                                                         fontSize:
                                                                             20,
                                                                       ),
@@ -1244,7 +1223,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                           ),
                                         ),
                                       ),
-
+            
                                       // Action buttons for editing and deleting
                                       Flexible(
                                         flex: 1,
@@ -1286,19 +1265,19 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                     },
                                                     screenTheme:
                                                         selectedYearTheme ??
-                                                            welcomeThemeState,
+                                                            appTheme,
                                                     buttonColor:
                                                         selectedYearTheme
                                                                 ?.colorScheme
                                                                 .error ??
-                                                            welcomeThemeState
+                                                            appTheme
                                                                 .colorScheme
                                                                 .error,
                                                   ),
                                                 ),
-
+            
                                                 SizedBox(width: 15),
-
+            
                                                 // Color button
                                                 SizedBox(
                                                     width: 150,
@@ -1318,7 +1297,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                   .circular(10),
                                                           color: selectedYearTheme
                                                                   ?.primaryColor ??
-                                                              welcomeThemeState
+                                                              appTheme
                                                                   .primaryColor,
                                                         ),
                                                         child: Center(
@@ -1327,7 +1306,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                           style: TextStyle(
                                                               color: selectedYearTheme
                                                                       ?.primaryColorDark ??
-                                                                  welcomeThemeState
+                                                                  appTheme
                                                                       .primaryColorDark,
                                                               fontSize: 17),
                                                         )),
@@ -1379,14 +1358,14 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                       color: selectedYearTheme
                                                                               ?.colorScheme
                                                                               .onError ??
-                                                                          welcomeThemeState
+                                                                          appTheme
                                                                               .colorScheme
                                                                               .onError),
                                                                 ),
                                                                 backgroundColor: selectedYearTheme
                                                                         ?.colorScheme
                                                                         .error ??
-                                                                    welcomeThemeState
+                                                                    appTheme
                                                                         .colorScheme
                                                                         .error,
                                                                 duration:
@@ -1408,7 +1387,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         },
                                                         screenTheme:
                                                             selectedYearTheme ??
-                                                                welcomeThemeState,
+                                                                appTheme,
                                                       ),
                                                     );
                                                   } else {
@@ -1426,7 +1405,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         ),
                                                         // Save changes to year
                                                         // Get selected school year from year state
-
+            
                                                         if (textChanged ==
                                                                 true ||
                                                             colorChanged ==
@@ -1450,7 +1429,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                       yearTextController
                                                                           .text,
                                                                 );
-
+            
                                                                 if (!yearExists || selectedYear!.year == yearTextController.text) {
                                                                   // Edit the year if it doesn't already exist
                                                                   context
@@ -1474,12 +1453,12 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                                         "This year already exists",
                                                                         style: TextStyle(
                                                                             color:
-                                                                                selectedYearTheme?.colorScheme.onError ?? welcomeThemeState.colorScheme.onError),
+                                                                                selectedYearTheme?.colorScheme.onError ?? appTheme.colorScheme.onError),
                                                                       ),
                                                                       backgroundColor: selectedYearTheme
                                                                               ?.colorScheme
                                                                               .error ??
-                                                                          welcomeThemeState
+                                                                          appTheme
                                                                               .colorScheme
                                                                               .error,
                                                                       duration: Duration(
@@ -1495,7 +1474,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                               },
                                                               screenTheme:
                                                                   selectedYearTheme ??
-                                                                      welcomeThemeState,
+                                                                      appTheme,
                                                             ),
                                                           ),
                                                         SizedBox(
@@ -1504,45 +1483,18 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                         // Navigate button
                                                         SizedBox(
                                                           width: 300,
-                                                          child:
-                                                              NeumorphicTextButton(
-                                                            buttonText:
-                                                                "Navigate",
+                                                          child: NeumorphicTextButton(
+                                                            buttonText: "Navigate",
                                                             onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pushReplacement(
+                                                              Navigator.of(context).pushReplacement(
                                                                 MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          MultiBlocProvider(
+                                                                  builder: (context) => MultiBlocProvider(
                                                                     providers: [
-                                                                      BlocProvider(
-                                                                          create: (context) =>
-                                                                              CourseCubit(TeacherRepo())),
-                                                                      BlocProvider.value(
-                                                                          value:
-                                                                              context.read<ThemeCubit>()),
-                                                                      BlocProvider.value(
-                                                                          value:
-                                                                              context.read<SettingsCubit>()),
-                                                                      BlocProvider(
-                                                                          create: (context) =>
-                                                                              AssignmentCubit(TeacherRepo())),
-                                                                      BlocProvider(
-                                                                          create: (context) =>
-                                                                              StudentCubit(TeacherRepo())),
-                                                                      BlocProvider(
-                                                                          create: (context) =>
-                                                                              GradeCubit(TeacherRepo())),
+                                                                      BlocProvider.value(value: context.read<ThemeCubit>()),
+                                                                      BlocProvider.value(value: context.read<SettingsCubit>()),
+                                                                      BlocProvider(create: (context) => CourseCubit(TeacherRepo())),
                                                                     ],
-                                                                    child:
-                                                                        CoursePage(
-                                                                      currentCourse:
-                                                                          selectedCourseList![
-                                                                              1],
-                                                                      currentYear:
-                                                                          selectedYear!,
+                                                                    child: CoursePage(currentYear: selectedYear!,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1550,7 +1502,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                                             },
                                                             screenTheme:
                                                                 selectedYearTheme ??
-                                                                    welcomeThemeState,
+                                                                    appTheme,
                                                           ),
                                                         )
                                                       ],
@@ -1568,7 +1520,7 @@ class _YearLandingPageState extends State<YearLandingPage>
                                 ),
                               ),
                             ),
-
+            
                           if (selectedYear == null && addYear == false)
                             Expanded(
                               flex: 22,

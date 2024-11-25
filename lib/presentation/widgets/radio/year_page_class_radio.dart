@@ -77,7 +77,7 @@ class _YearPageClassToggleState extends State<YearPageClassToggle> {
                       child: NeumorphicTextButton(
                         buttonText: courseName,
                         onPressed: () {
-
+                          
                           // Notify parent of the course selection
                           if (widget.onOptionChanged != null) {
                             widget.onOptionChanged!(coursesList);

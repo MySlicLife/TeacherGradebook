@@ -6,12 +6,14 @@ import '../../../storage/school_year/year.dart';
 class GradeBreakdown extends StatefulWidget {
   final List<Course>? selectedCourseList;
   final Year? selectedYear;
+  final Course? selectedCourse;
   final ThemeData screenTheme;
 
   const GradeBreakdown(
       {super.key,
       this.selectedCourseList,
       this.selectedYear,
+      this.selectedCourse,
       required this.screenTheme,});
 
   @override
@@ -53,6 +55,15 @@ class _GradeBreakdownState extends State<GradeBreakdown> {
           }
         }
       }
+    } else if (widget.selectedCourse != null) {
+      // Count grades for the whole year
+
+        for (var student in widget.selectedCourse!.students) {
+          String letterGrade = student.studentLetterGrade ?? "N/A";
+          if (gradeCountMap.containsKey(letterGrade)) {
+            gradeCountMap[letterGrade] = gradeCountMap[letterGrade]! + 1;
+          }
+        }
     } else {
       List<String> dummyGrades = [
         "A", "B", "C", "A", "D", "B", "C", "A", "F", "C",

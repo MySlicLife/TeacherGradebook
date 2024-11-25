@@ -135,7 +135,6 @@ class _YearPageState extends State<YearPage> {
                                                                   TeacherRepo())),
                                                     ],
                                                     child: CoursePage(
-                                                      currentCourse: course,
                                                       currentYear: state.year,
                                                     ),
                                                   ),
@@ -218,7 +217,6 @@ class _YearPageState extends State<YearPage> {
                                                                   TeacherRepo())),
                                                     ],
                                                     child: CoursePage(
-                                                      currentCourse: course,
                                                       currentYear: state.year,
                                                     ),
                                                   ),

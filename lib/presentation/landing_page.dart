@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teacher_gradebook/helpers/update_checker/update_checker.dart';
-import 'package:teacher_gradebook/presentation/new_welcome_page.dart';
+import 'package:teacher_gradebook/presentation/welcome_page.dart';
 import 'package:teacher_gradebook/storage/settings/settings_storage.dart';
 import 'package:teacher_gradebook/storage/teacher_repo.dart';
 
@@ -49,8 +49,7 @@ class _LandingPageState extends State<LandingPage> {
                   BlocProvider.value(value: context.read<SettingsCubit>()),
                 ],
                 child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    home: YearLandingPage()))));
+                    home: WelcomePage()))));
   }
 
   void _launchUpdate() {
@@ -69,7 +68,6 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsCubit, SettingsState>(
       builder: (context, settingsState) {
-        print(settingsState.appThemeInt);
         return Scaffold(
           body: Column(
             children: [
