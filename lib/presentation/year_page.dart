@@ -86,19 +86,14 @@ class _YearPageState extends State<YearPage> {
                                 child: Builder(
                                   builder: (context) {
                                     // Get the filtered list of courses containing 'A' or 'a'
-                                    List<Course> aCourses = state.year.courses
-                                        .where((course) => course.coursePeriod
-                                            .toUpperCase()
-                                            .contains('A'))
-                                        .toList();
+                                    List<Course> aCourses = state.year.courses.where((course) => course.coursePeriod.toUpperCase().contains('A')).toList();
 
                                     // Check if there are any A-day courses
                                     if (aCourses.isEmpty) {
                                       return Center(
                                         child: Text(
                                           'No A-day courses available',
-                                          style: TextStyle(
-                                              fontSize: 18, color: Colors.grey),
+                                          style: TextStyle(fontSize: 18, color: Colors.grey),
                                         ),
                                       );
                                     }
@@ -124,15 +119,8 @@ class _YearPageState extends State<YearPage> {
                                                   builder: (context) =>
                                                       MultiBlocProvider(
                                                     providers: [
-                                                      BlocProvider(
-                                                        create: (context) =>
-                                                            StudentCubit(
-                                                                TeacherRepo()),
-                                                      ),
-                                                      BlocProvider(
-                                                          create: (context) =>
-                                                              AssignmentCubit(
-                                                                  TeacherRepo())),
+                                                      BlocProvider(create: (context) => StudentCubit(TeacherRepo()),),
+                                                      BlocProvider(create: (context) => AssignmentCubit(TeacherRepo())),
                                                     ],
                                                     child: CoursePage(
                                                       currentYear: state.year,
@@ -146,11 +134,9 @@ class _YearPageState extends State<YearPage> {
                                                   context: context,
                                                   builder: (dialogContext) =>
                                                       BlocProvider.value(
-                                                        value: context.read<
-                                                            CourseCubit>(),
+                                                        value: context.read<CourseCubit>(),
                                                         child: CourseDialog(
-                                                          yearId:
-                                                              widget.year.id,
+                                                          yearId: widget.year.id,
                                                           isEditing: true,
                                                           currentCourse: course,
                                                         ),
@@ -203,18 +189,10 @@ class _YearPageState extends State<YearPage> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MultiBlocProvider(
+                                                  builder: (context) => MultiBlocProvider(
                                                     providers: [
-                                                      BlocProvider(
-                                                        create: (context) =>
-                                                            StudentCubit(
-                                                                TeacherRepo()),
-                                                      ),
-                                                      BlocProvider(
-                                                          create: (context) =>
-                                                              AssignmentCubit(
-                                                                  TeacherRepo())),
+                                                      BlocProvider(create: (context) => StudentCubit(TeacherRepo()),),
+                                                      BlocProvider(create: (context) => AssignmentCubit(TeacherRepo())),
                                                     ],
                                                     child: CoursePage(
                                                       currentYear: state.year,
@@ -228,11 +206,9 @@ class _YearPageState extends State<YearPage> {
                                                   context: context,
                                                   builder: (dialogContext) =>
                                                       BlocProvider.value(
-                                                        value: context.read<
-                                                            CourseCubit>(),
+                                                        value: context.read<CourseCubit>(),
                                                         child: CourseDialog(
-                                                          yearId:
-                                                              widget.year.id,
+                                                          yearId: widget.year.id,
                                                           isEditing: true,
                                                           currentCourse: course,
                                                         ),

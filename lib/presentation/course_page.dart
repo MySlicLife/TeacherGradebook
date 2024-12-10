@@ -10,7 +10,6 @@ import 'package:teacher_gradebook/presentation/widgets/buttons/course_day_select
 import 'package:teacher_gradebook/presentation/widgets/buttons/icon_button.dart';
 import 'package:teacher_gradebook/presentation/widgets/buttons/text_button.dart';
 import 'package:teacher_gradebook/presentation/widgets/drawers/settings_drawer.dart';
-import 'package:teacher_gradebook/presentation/widgets/text_field/text_field.dart';
 import 'package:teacher_gradebook/storage/course/course_cubit.dart';
 import 'package:teacher_gradebook/storage/settings/settings_storage.dart';
 import 'package:statistics/statistics.dart';
@@ -224,60 +223,44 @@ class _CoursePageState extends State<CoursePage> {
                           //Row left is information text and course selection buttons
                           Expanded(
                             child: Padding(
-                              padding:
-                                  EdgeInsets.only(right: elementPadding / 2),
+                              padding: EdgeInsets.only(right: elementPadding / 2),
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   //First is Year and Back Button
                                   Flexible(
-                                    flex: 3,
+                                    flex: 4,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         //Back Button
                                         Container(
                                           decoration: BoxDecoration(
-                                              color: coursePageTheme
-                                                  .colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
+                                              color: coursePageTheme.colorScheme.primary,
+                                              borderRadius: BorderRadius.circular(15)),
                                           child: AspectRatio(
                                               aspectRatio: 1,
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(30),
+                                                padding: const EdgeInsets.all(30),
                                                 child: NeumorphicIconButton(
-                                                    onPressed: () =>
-                                                        goToPreviousPage(
-                                                            context),
-                                                    currentTheme:
-                                                        coursePageTheme,
-                                                    buttonIcon: Icons
-                                                        .arrow_back_ios_new_rounded),
+                                                    onPressed: () => goToPreviousPage(context),
+                                                    currentTheme: coursePageTheme,
+                                                    buttonIcon: Icons.arrow_back_ios_new_rounded),
                                               )),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 20),
+                                          padding: const EdgeInsets.only(left: 20),
                                           child: Container(
                                             alignment: Alignment.center,
                                             padding: EdgeInsets.all(8),
                                             decoration: BoxDecoration(
-                                                color: coursePageTheme
-                                                    .colorScheme.primary,
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
+                                                color: coursePageTheme.colorScheme.primary,
+                                                borderRadius: BorderRadius.circular(15)),
                                             child: Center(
-                                                child: Text(
-                                              widget.currentYear.year,
+                                                child: Text(widget.currentYear.year,
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 90),
                                             )),
                                           ),
@@ -290,38 +273,25 @@ class _CoursePageState extends State<CoursePage> {
                                       flex: 2,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color: coursePageTheme
-                                                .colorScheme.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
+                                            color: coursePageTheme.colorScheme.primary,
+                                            borderRadius: BorderRadius.circular(15)),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
-                                              DateFormat('MMMM dd, yyyy')
-                                                  .format(widget
-                                                      .currentYear.startDate),
+                                            Text(DateFormat('MMMM dd, yyyy').format(widget.currentYear.startDate),
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40),
                                             ),
-                                            Text(
-                                              "-",
+                                            Text("-",
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Text(
-                                              DateFormat('MMMM dd, yyyy')
-                                                  .format(widget
-                                                      .currentYear.endDate),
+                                            Text(DateFormat('MMMM dd, yyyy').format(widget.currentYear.endDate),
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40),
                                             ),
                                           ],
@@ -332,101 +302,69 @@ class _CoursePageState extends State<CoursePage> {
                                       flex: 2,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color: coursePageTheme
-                                                .colorScheme.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
+                                            color: coursePageTheme.colorScheme.primary,
+                                            borderRadius: BorderRadius.circular(15)),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
-                                              widget.currentYear.schoolName,
+                                            Text(widget.currentYear.schoolName,
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40),
                                             ),
-                                            Text(
-                                              "|",
+                                            Text("|",
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Text(
-                                              widget.currentYear.location,
+                                            Text(widget.currentYear.location,
                                               style: TextStyle(
-                                                  color: coursePageTheme
-                                                      .colorScheme.onPrimary,
+                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                   fontSize: 40),
                                             ),
                                           ],
                                         ),
                                       )),
                                   //Fourth is row of A day and B day
-
                                   if (courseState is CourseLoaded)
                                     Flexible(
                                         flex: 15,
                                         child: Container(
                                           decoration: BoxDecoration(
-                                              color: coursePageTheme
-                                                  .colorScheme.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
+                                              color: coursePageTheme.colorScheme.primary,
+                                              borderRadius: BorderRadius.circular(15)),
                                           child: Row(
                                             children: [
                                               //A day
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                      "A Day",
+                                                    Text("A Day",
                                                       style: TextStyle(
-                                                          color: coursePageTheme
-                                                              .colorScheme
-                                                              .onPrimary,
+                                                          color: coursePageTheme.colorScheme.onPrimary,
                                                           fontSize: 30,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          fontWeight: FontWeight.bold),
                                                     ),
                                                     if (aCourses.isNotEmpty)
                                                       Expanded(
                                                         child: LayoutBuilder(
-                                                          builder: (context,
-                                                              constraints) {
-                                                            double
-                                                                availableHeight =
-                                                                constraints
-                                                                        .maxHeight -
-                                                                    (4 *
-                                                                        elementPadding);
-                                                            double
-                                                                buttonHeight =
-                                                                availableHeight /
-                                                                    4;
-                                                            return ListView
-                                                                .builder(
-                                                                    physics:
-                                                                        NeverScrollableScrollPhysics(),
-                                                                    itemCount:
-                                                                        aCourses
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
+                                                          builder: (context,constraints) {
+                                                            double availableHeight = constraints.maxHeight - (4 * elementPadding);
+                                                            double buttonHeight = availableHeight / 4;
+                                                            return ListView.builder(
+                                                                    physics: NeverScrollableScrollPhysics(),
+                                                                    itemCount: aCourses.length,
+                                                                    itemBuilder: (context, index) {
                                                                       return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.all(elementPadding /
-                                                                                2),
+                                                                        padding: EdgeInsets.all(elementPadding / 2),
                                                                         child: SizedBox(
                                                                             height: buttonHeight,
                                                                             child: NeumorphicTextButton(
                                                                               buttonText: "${aCourses[index].coursePeriod} | ${aCourses[index].courseName}",
+                                                                              screenTheme: coursePageTheme,
+                                                                              buttonTextSize: 40,                                                                              
                                                                               onPressed: () {
                                                                                 calculateStatistic(aCourses[index]);
                                                                                 setState(() {
@@ -436,8 +374,6 @@ class _CoursePageState extends State<CoursePage> {
                                                                                   addCourse = false;
                                                                                 });
                                                                               },
-                                                                              screenTheme: coursePageTheme,
-                                                                              buttonTextSize: 40,
                                                                             )),
                                                                       );
                                                                     });
@@ -445,17 +381,14 @@ class _CoursePageState extends State<CoursePage> {
                                                         ),
                                                       )
                                                     else if (aCourses.isEmpty)
-                                                      Text(
-                                                        "No A Day Courses...",
-                                                        style: TextStyle(
-                                                            color:
-                                                                coursePageTheme
-                                                                    .colorScheme
-                                                                    .onPrimary,
-                                                            fontSize: 60,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical: 20),
+                                                        child: Text("No A Day Courses...",
+                                                          style: TextStyle(
+                                                              color: coursePageTheme.colorScheme.onPrimary,
+                                                              fontSize: 20,
+                                                              fontWeight: FontWeight.bold),
+                                                        ),
                                                       )
                                                   ],
                                                 ),
@@ -464,60 +397,39 @@ class _CoursePageState extends State<CoursePage> {
                                               Expanded(
                                                 child: Column(
                                                   children: [
-                                                    Text(
-                                                      "B Day",
+                                                    Text("B Day",
                                                       style: TextStyle(
-                                                          color: coursePageTheme
-                                                              .colorScheme
-                                                              .onPrimary,
+                                                          color: coursePageTheme.colorScheme.onPrimary,
                                                           fontSize: 30,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          fontWeight: FontWeight.bold),
                                                     ),
                                                     if (bCourses.isNotEmpty)
                                                       Expanded(
                                                         child: LayoutBuilder(
-                                                          builder: (context,
-                                                              constraints) {
-                                                            double
-                                                                availableHeight =
-                                                                constraints
-                                                                        .maxHeight -
-                                                                    (4 *
-                                                                        elementPadding);
-                                                            double
-                                                                buttonHeight =
-                                                                availableHeight /
-                                                                    4;
-                                                            return ListView
-                                                                .builder(
-                                                                    physics:
-                                                                        NeverScrollableScrollPhysics(),
-                                                                    itemCount:
-                                                                        bCourses
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
+                                                          builder: (context, constraints) {
+                                                            double availableHeight = constraints.maxHeight - (4 * elementPadding);
+                                                            double buttonHeight = availableHeight / 4;
+                                                            return ListView.builder(
+                                                                    physics: NeverScrollableScrollPhysics(),
+                                                                    itemCount: bCourses.length,
+                                                                    itemBuilder: (context, index) {
                                                                       return Padding(
-                                                                        padding:
-                                                                            EdgeInsets.all(elementPadding /
-                                                                                2),
+                                                                        padding: EdgeInsets.all(elementPadding / 2),
                                                                         child: SizedBox(
                                                                             height: buttonHeight,
                                                                             child: NeumorphicTextButton(
                                                                               buttonText: "${bCourses[index].coursePeriod} | ${bCourses[index].courseName}",
+                                                                              screenTheme: coursePageTheme,
+                                                                              buttonTextSize: 40,                                                                              
                                                                               onPressed: () {
                                                                                 calculateStatistic(bCourses[index]);
                                                                                 setState(() {
                                                                                   selectedCourse = bCourses[index];
                                                                                   courseNameController.text = bCourses[index].courseName;
-                                                                                  periodController.text = aCourses[index].coursePeriod.replaceAll(RegExp(r'[a-zA-Z]'), '');
+                                                                                  periodController.text = bCourses[index].coursePeriod.replaceAll(RegExp(r'[a-zA-Z]'), '');
                                                                                   addCourse = false;
                                                                                 });
                                                                               },
-                                                                              screenTheme: coursePageTheme,
-                                                                              buttonTextSize: 40,
                                                                             )),
                                                                       );
                                                                     });
@@ -525,13 +437,14 @@ class _CoursePageState extends State<CoursePage> {
                                                         ),
                                                       )
                                                     else if (bCourses.isEmpty)
-                                                      Text(
-                                                        "No B Day Courses...",
-                                                        style: TextStyle(
-                                                            color:
-                                                                coursePageTheme
-                                                                    .colorScheme
-                                                                    .onPrimary),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(vertical: 20),
+                                                        child: Text("No B Day Courses...",
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight.bold,
+                                                            color: coursePageTheme.colorScheme.onPrimary),
+                                                        ),
                                                       )
                                                   ],
                                                 ),
@@ -546,8 +459,7 @@ class _CoursePageState extends State<CoursePage> {
                           //Row right is add course, settings and the text box for the course
                           Expanded(
                               child: Padding(
-                                  padding:
-                                      EdgeInsets.only(left: elementPadding / 2),
+                                  padding: EdgeInsets.only(left: elementPadding / 2),
                                   child: Column(children: [
                                     Flexible(
                                       flex: 2,
@@ -559,37 +471,26 @@ class _CoursePageState extends State<CoursePage> {
                                             child: Align(
                                               alignment: Alignment.centerRight,
                                               child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    bottom: elementPadding / 2),
+                                                padding: EdgeInsets.only(bottom: elementPadding / 2),
                                                 child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
+                                                  mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     // Add year button (4x the width of the Settings button)
                                                     Flexible(
                                                       flex: 1,
                                                       child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right: 20),
-                                                        child:
-                                                            NeumorphicTextButton(
+                                                        padding: const EdgeInsets.only(right: 20),
+                                                        child: NeumorphicTextButton(
+                                                          buttonText: "Add Course...",
+                                                          screenTheme: coursePageTheme,                                                          
                                                           onPressed: () {
                                                             setState(() {
                                                               addCourse = true;
-                                                              selectedCourse =
-                                                                  null;
-                                                              courseNameController
-                                                                  .clear();
-                                                              periodController
-                                                                  .clear();
+                                                              selectedCourse = null;
+                                                              courseNameController.clear();
+                                                              periodController.clear();
                                                             });
                                                           },
-                                                          buttonText:
-                                                              "Add Course...",
-                                                          screenTheme:
-                                                              coursePageTheme,
                                                         ),
                                                       ),
                                                     ),
@@ -598,19 +499,13 @@ class _CoursePageState extends State<CoursePage> {
                                                     Flexible(
                                                       flex: 2,
                                                       child: AspectRatio(
-                                                        aspectRatio:
-                                                            1, // Ensures the button is a perfect square
-                                                        child:
-                                                            NeumorphicIconButton(
+                                                        aspectRatio: 1, 
+                                                        child: NeumorphicIconButton(
+                                                          buttonIcon: Icons.settings,
+                                                          currentTheme: appTheme,                                                          
                                                           onPressed: () {
-                                                            _scaffoldKey
-                                                                .currentState!
-                                                                .openEndDrawer();
+                                                            _scaffoldKey.currentState!.openEndDrawer();
                                                           },
-                                                          buttonIcon:
-                                                              Icons.settings,
-                                                          currentTheme:
-                                                              appTheme,
                                                         ),
                                                       ),
                                                     ),
@@ -620,30 +515,22 @@ class _CoursePageState extends State<CoursePage> {
                                             ),
                                           ),
                                           //Second is the course textbox
-                                          if (selectedCourse != null ||
-                                              addCourse == true)
-                                            Expanded(
+                                          if (selectedCourse != null || addCourse == true)
+                                            Flexible(
                                                 flex: 22,
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(
-                                                      elementPadding / 2),
+                                                  padding: EdgeInsets.all(elementPadding / 2),
                                                   child: Container(
                                                     decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        color: coursePageTheme
-                                                            .colorScheme
-                                                            .primary),
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        color: coursePageTheme.colorScheme.primary),
                                                     child: Column(
                                                       children: [
                                                         //Row that contains the course name text box, period text box and A or B button selector
                                                         Flexible(
                                                             flex: 4,
                                                             child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                               children: [
                                                                 //Text field and period identifier
                                                                 Flexible(
@@ -655,23 +542,13 @@ class _CoursePageState extends State<CoursePage> {
                                                                         flex: 3,
                                                                         child:
                                                                             Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              top: 10,
-                                                                              bottom: 10,
-                                                                              left: 10),
-                                                                          child:
-                                                                              Container(
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(
-                                                                                topLeft: Radius.circular(15),
-                                                                                bottomLeft: Radius.circular(15),
-                                                                              ),
+                                                                          padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
+                                                                          child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15),),
                                                                               color: coursePageTheme.colorScheme.tertiary,
                                                                             ),
-                                                                            child:
-                                                                                Center(
+                                                                            child: Center(
                                                                               child: TextField(
                                                                                 cursorColor: coursePageTheme.colorScheme.onTertiary,
                                                                                 textAlign: TextAlign.center,
@@ -695,35 +572,22 @@ class _CoursePageState extends State<CoursePage> {
                                                                           ),
                                                                         ),
                                                                       ),
-
+                                            
                                                                       // Period Textbox
                                                                       Flexible(
-                                                                        flex:
-                                                                            1, // Same flex value as the text field container
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              top: 10,
-                                                                              bottom: 10,
-                                                                              right: 10),
-                                                                          child:
-                                                                              Container(
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(
-                                                                                topRight: Radius.circular(15),
-                                                                                bottomRight: Radius.circular(15),
-                                                                              ),
+                                                                        flex: 1, 
+                                                                        child: Padding(
+                                                                          padding: const EdgeInsets.only(top: 10, bottom: 10, right: 10),
+                                                                          child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15),),
                                                                               color: coursePageTheme.colorScheme.tertiary,
                                                                             ),
-                                                                            child:
-                                                                                Center(
-                                                                              child: Text(
-                                                                                selectedCourse?.coursePeriod ?? "Period",
+                                                                            child: Center(
+                                                                              child: Text(selectedCourse?.coursePeriod ?? "Period",
                                                                                 style: TextStyle(
                                                                                   color: coursePageTheme.colorScheme.onTertiary,
-                                                                                  fontSize: 50, // Adjust the font size as needed
+                                                                                  fontSize: 50,
                                                                                 ),
                                                                               ),
                                                                             ),
@@ -735,21 +599,16 @@ class _CoursePageState extends State<CoursePage> {
                                                                 ),
                                                                 Flexible(
                                                                     flex: 2,
-                                                                    child:
-                                                                        SizedBox()),
-                                                                Expanded(
+                                                                    child: SizedBox()),
+                                                                Flexible(
                                                                     flex: 2,
                                                                     child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
+                                                                      mainAxisAlignment: MainAxisAlignment.end,
                                                                       children: [
                                                                         //Text field for period number
                                                                         Flexible(
-                                                                            flex:
-                                                                                2,
-                                                                            child:
-                                                                                Padding(
+                                                                            flex: 2,
+                                                                            child: Padding(
                                                                               padding: const EdgeInsets.all(10),
                                                                               child: Container(
                                                                                 decoration: BoxDecoration(
@@ -783,10 +642,8 @@ class _CoursePageState extends State<CoursePage> {
                                                                             )),
                                                                         //Button selector for A or B day
                                                                         Flexible(
-                                                                            flex:
-                                                                                2,
-                                                                            child:
-                                                                                CourseDaySelector(
+                                                                            flex: 2,
+                                                                            child: CourseDaySelector(
                                                                               isA: selectedCourse?.coursePeriod.contains('A') ?? false,
                                                                               courseTheme: coursePageTheme,
                                                                               isDarkMode: settingsState.isDarkMode,
@@ -802,27 +659,19 @@ class _CoursePageState extends State<CoursePage> {
                                                               ],
                                                             )),
                                                         //Row that contains left stats, divider and right stats
-                                                        Flexible(
+                                                        Expanded(
                                                             flex: 16,
                                                             child: Row(
                                                               children: [
                                                                 //Left side is number of students, grade breakdown
                                                                 Expanded(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .start,
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.all(10),
+                                                                    child: Column(
+                                                                      mainAxisAlignment: MainAxisAlignment.start,
                                                                       children: [
                                                                         Flexible(
-                                                                          flex:
-                                                                              2,
+                                                                          flex: 2,
                                                                           child: Column(
                                                                               mainAxisAlignment: MainAxisAlignment.start,
                                                                               children: [
@@ -831,13 +680,11 @@ class _CoursePageState extends State<CoursePage> {
                                                                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: coursePageTheme.colorScheme.secondary),
                                                                                   child: Row(
                                                                                     children: [
-                                                                                      Text(
-                                                                                        "Total Students: ",
+                                                                                      Text("Total Students: ",
                                                                                         style: TextStyle(fontSize: 25, color: coursePageTheme.colorScheme.onSecondary),
                                                                                       ),
                                                                                       SizedBox(width: 10),
-                                                                                      Text(
-                                                                                        selectedCourse?.students.length.toString() ?? "25",
+                                                                                      Text(selectedCourse?.students.length.toString() ?? "25",
                                                                                         style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: coursePageTheme.colorScheme.onSecondary),
                                                                                       ),
                                                                                     ],
@@ -846,14 +693,10 @@ class _CoursePageState extends State<CoursePage> {
                                                                               ]),
                                                                         ),
                                                                         Flexible(
-                                                                          flex:
-                                                                              10,
-                                                                          child:
-                                                                              GradeBreakdown(
-                                                                            selectedCourse:
-                                                                                selectedCourse,
-                                                                            screenTheme:
-                                                                                coursePageTheme,
+                                                                          flex: 10,
+                                                                          child: GradeBreakdown(
+                                                                            selectedCourse: selectedCourse,
+                                                                            screenTheme: coursePageTheme,
                                                                           ),
                                                                         ),
                                                                       ],
@@ -863,39 +706,24 @@ class _CoursePageState extends State<CoursePage> {
                                                                 //Vertical divider
                                                                 VerticalDivider(
                                                                   thickness: 2,
-                                                                  color: coursePageTheme
-                                                                      .colorScheme
-                                                                      .onPrimary,
+                                                                  color: coursePageTheme.colorScheme.onPrimary,
                                                                   width: 20,
                                                                 ),
                                                                 //Right side is statistics
                                                                 Expanded(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            5),
-                                                                    child:
-                                                                        Column(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                  child: Padding(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    child: Column(
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                                       children: [
                                                                         Container(
-                                                                          padding:
-                                                                              EdgeInsets.all(15),
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(15),
-                                                                            color:
-                                                                                coursePageTheme.colorScheme.secondary,
+                                                                          padding: EdgeInsets.all(15),
+                                                                          decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.circular(15),
+                                                                            color: coursePageTheme.colorScheme.secondary,
                                                                           ),
-                                                                          child:
-                                                                              Column(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
+                                                                          child: Column(
+                                                                            mainAxisAlignment: MainAxisAlignment.center,
                                                                             children: [
                                                                               Padding(
                                                                                 padding: const EdgeInsets.symmetric(vertical: 5),
@@ -915,15 +743,13 @@ class _CoursePageState extends State<CoursePage> {
                                                                                   ),
                                                                                   child: Column(
                                                                                     children: [
-                                                                                      Text(
-                                                                                        addCourse ? 'Bob Bobbington' : "${selectedItemStatistics['max']['student']}",
+                                                                                      Text(addCourse ? 'Bob Bobbington' : "${selectedItemStatistics['max']['student']}",
                                                                                         maxLines: 1,
                                                                                         style: TextStyle(color: coursePageTheme.colorScheme.onPrimary, fontSize: 40, overflow: TextOverflow.fade),
                                                                                       ),
                                                                                       Align(
                                                                                         alignment: Alignment.centerRight,
-                                                                                        child: Text(
-                                                                                          addCourse ? '100' : "${selectedItemStatistics['max']['grade']}",
+                                                                                        child: Text(addCourse ? '100' : "${selectedItemStatistics['max']['grade']}",
                                                                                           style: TextStyle(
                                                                                             color: coursePageTheme.colorScheme.onPrimary,
                                                                                             fontSize: 30,
@@ -932,8 +758,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                       ),
                                                                                       Align(
                                                                                         alignment: Alignment.centerRight,
-                                                                                        child: Text(
-                                                                                          "Highest Grade",
+                                                                                        child: Text("Highest Grade",
                                                                                           style: TextStyle(
                                                                                             color: coursePageTheme.colorScheme.onPrimary,
                                                                                             fontSize: 20,
@@ -954,15 +779,13 @@ class _CoursePageState extends State<CoursePage> {
                                                                                   ),
                                                                                   child: Column(
                                                                                     children: [
-                                                                                      Text(
-                                                                                        addCourse ? 'Bob Bobbington' : "${selectedItemStatistics['min']['student']}",
+                                                                                      Text(addCourse ? 'Bob Bobbington' : "${selectedItemStatistics['min']['student']}",
                                                                                         maxLines: 1,
                                                                                         style: TextStyle(color: coursePageTheme.colorScheme.onPrimary, fontSize: 40, overflow: TextOverflow.fade),
                                                                                       ),
                                                                                       Align(
                                                                                         alignment: Alignment.centerRight,
-                                                                                        child: Text(
-                                                                                          addCourse ? '100' : "${selectedItemStatistics['min']['grade']}",
+                                                                                        child: Text(addCourse ? '100' : "${selectedItemStatistics['min']['grade']}",
                                                                                           style: TextStyle(
                                                                                             color: coursePageTheme.colorScheme.onPrimary,
                                                                                             fontSize: 30,
@@ -971,8 +794,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                       ),
                                                                                       Align(
                                                                                         alignment: Alignment.centerRight,
-                                                                                        child: Text(
-                                                                                          "Lowest Grade",
+                                                                                        child: Text("Lowest Grade",
                                                                                           style: TextStyle(
                                                                                             color: coursePageTheme.colorScheme.onPrimary,
                                                                                             fontSize: 20,
@@ -1000,7 +822,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                           child: Column(
                                                                                             children: [
                                                                                               Text("Average", style: TextStyle(color: Colors.white, fontSize: 18)),
-                                                                                              Text(selectedItemStatistics['avg'])
+                                                                                              Text(selectedItemStatistics['avg'] ?? '80', style: TextStyle(color: Colors.white, fontSize: 18))
                                                                                             ],
                                                                                           ),
                                                                                         ),
@@ -1019,7 +841,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                           child: Column(
                                                                                             children: [
                                                                                               Text("Standard Deviation", style: TextStyle(color: Colors.white, fontSize: 18),),
-                                                                                              Text(selectedItemStatistics['sd'])
+                                                                                              Text(selectedItemStatistics['sd'] ?? "4", style: TextStyle(color: Colors.white, fontSize: 18))
                                                                                             ],
                                                                                           ),
                                                                                         ),
@@ -1041,50 +863,35 @@ class _CoursePageState extends State<CoursePage> {
                                                         Flexible(
                                                             flex: 2,
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(10),
+                                                              padding: const EdgeInsets.all(10),
                                                               child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   //Delete course
                                                                   Flexible(
                                                                     flex: 2,
-                                                                    child:
-                                                                        NeumorphicTextButton(
-                                                                      buttonText:
-                                                                          "Delete",
-                                                                      onPressed:
-                                                                          () {
-                                                                        if (addCourse ==
-                                                                            true) {
-                                                                          addCourse ==
-                                                                              false;
+                                                                    child: NeumorphicTextButton(
+                                                                      buttonText: "Delete",
+                                                                      screenTheme: coursePageTheme,
+                                                                      buttonColor: coursePageTheme.colorScheme.error,                                                                      
+                                                                      onPressed: () {
+                                                                        if (addCourse == true) {
+                                                                          addCourse == false;
                                                                         } else {
-                                                                          courseCubit.deleteCourse(
-                                                                              selectedCourse!.courseId,
-                                                                              widget.currentYear.id);
+                                                                          courseCubit.deleteCourse(selectedCourse!.courseId, widget.currentYear.id);
                                                                         }
                                                                       },
-                                                                      screenTheme:
-                                                                          coursePageTheme,
-                                                                      buttonColor: coursePageTheme
-                                                                          .colorScheme
-                                                                          .error,
                                                                     ),
                                                                   ),
                                                                   Flexible(
                                                                       flex: 3,
-                                                                      child:
-                                                                          SizedBox()),
-                                                                  if (addCourse ==
-                                                                      true)
+                                                                      child: SizedBox()),
+                                                                  if (addCourse == true)
                                                                     Flexible(
                                                                         flex: 5,
                                                                         child: NeumorphicTextButton(
                                                                             buttonText: "Add Course",
+                                                                            screenTheme: coursePageTheme,
                                                                             onPressed: () {
                                                                               if (courseState is CourseLoaded) {
                                                                                 if (courseState.courses.any((course) => course.coursePeriod != periodController.text)) {
@@ -1101,16 +908,13 @@ class _CoursePageState extends State<CoursePage> {
                                                                                 periodController.clear();
                                                                               }
                                                                             },
-                                                                            screenTheme: coursePageTheme)),
-                                                                  if (addCourse ==
-                                                                      false)
+                                                                            )),
+                                                                  if (addCourse == false)
                                                                     Flexible(
                                                                       flex: 5,
-                                                                      child:
-                                                                          Row(
+                                                                      child: Row(
                                                                         children: [
-                                                                          if ((colorChanged == true ||
-                                                                              courseChanged == true))
+                                                                          if ((colorChanged == true || courseChanged == true))
                                                                             Flexible(
                                                                                 flex: 2,
                                                                                 child: Padding(
@@ -1120,7 +924,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                     onPressed: () {
                                                                                       if (courseState is CourseLoaded) {
                                                                                         bool courseExists = courseState.courses.any((course) => course.coursePeriod != periodController.text && course.courseId != selectedCourse!.courseId);
-
+                                            
                                                                                         if (!courseExists || selectedCourse!.coursePeriod == periodController.text) {
                                                                                           courseCubit.editCourse(selectedCourse!.courseId, widget.currentYear.id, courseNameController.text, selectedCourse!.coursePeriod, []);
                                                                                         } else {
@@ -1139,8 +943,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                   ),
                                                                                 )),
                                                                           //Navigate
-                                                                          if ((colorChanged == false &&
-                                                                              courseChanged == false))
+                                                                          if ((colorChanged == false && courseChanged == false))
                                                                             Flexible(
                                                                                 flex: 2,
                                                                                 child: Padding(
@@ -1151,6 +954,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                               flex: 4,
                                                                               child: NeumorphicTextButton(
                                                                                   buttonText: "Navigate",
+                                                                                  screenTheme: coursePageTheme,
                                                                                   onPressed: () {
                                                                                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                                                                                       builder: (context) => MultiBlocProvider(
@@ -1167,7 +971,7 @@ class _CoursePageState extends State<CoursePage> {
                                                                                       ),
                                                                                     ));
                                                                                   },
-                                                                                  screenTheme: coursePageTheme))
+                                                                                  ))
                                                                         ],
                                                                       ),
                                                                     )
@@ -1179,8 +983,7 @@ class _CoursePageState extends State<CoursePage> {
                                                   ),
                                                 )),
                                           if (selectedCourse == null)
-                                            Flexible(
-                                                flex: 22, child: Container())
+                                            Flexible(flex: 22, child: Container())
                                         ],
                                       ),
                                     ),
